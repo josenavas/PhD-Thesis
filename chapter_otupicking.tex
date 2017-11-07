@@ -170,7 +170,64 @@ Performance was evaluated using a variety of metrics, including the accuracy of
 beta diversity (between-sample diversity), and taxonomic correlation. All tools
 showed increased precision after the removal of singleton \gls{otu}s (\gls{otu}s
 consisting of only one sequence), so all results presented here have had singleton
-\gls{otu}s removed. Table 2 summarizes basic performance results for all software.
+\gls{otu}s removed. Figure~\ref{stateArtT2} summarizes basic performance results
+for all software.
 
+\begin{figure}[htbp]
+\includegraphics[width=\columnwidth]{chapter_otupicking_figures/stateArtT2.pdf}
+\caption[Benchmark summary]{\textbf{Benchmark summary.} \gls{otu} counts do not
+include singletons. F measure (F1) is for assigned taxonomies at the genus level.
+The \gls{pd} whole-tree column for \emph{Bokulich\_2} and \emph{Bokulick\_3}
+represent \gls{pd} intervals across various sampling depths. Procrustes $M^2$
+(the sum of squared deviations or the dissimilarity of two datasets for UniFrac
+\gls{pcoa}) and rho (Pearson's correlation coefficient for taxonomies at genus
+level) values are with repect to UCLUST (default for \gls{qiime} versions 1.0.0
+to 1.9.1). Monte Carlo $P$ values were not included, since all values were
+$<0.05$ except for \emph{de novo} usearch52 versus uclust ($P = 0.09$). The darkest
+blue shades represent the highest F1 scores, while the darkest red shades represent
+results closest to those obtained with UCLUST}
+\label{stateArtT2}
+\end{figure}
+
+We found that Swarm, SUMACLUST, UCLUST, and UPARSE (with relaxed parameters)
+performed equally well on simulated datasets where the ground truth was well
+established, with \emph{mothur\_average} and OTUCLUST closely behind. Despite
+this controlled chimera-free environment, UPARSE with recommended parameters
+reported the lowest accuracy for the \emph{sim\_staggered} data set, implying
+that stringent quality filtering can cause a significant underestimation of
+species abundance and diversity and lead to incorrect biological results. For
+the mock communities, most tools were able to correctly detect the expected
+number and identity of genera, but only UPARSE reported significantly fewer
+false-positive taxa (followed by OTUCLUST and USEARCH). For UPARSE, this was
+expected, as a large proportion of reads was filtered out prior to clustering,
+leaving evidence of only the most abundant taxa (\gls{otu}s comprised of
+hundreds of thousands of reads). The majority of false-positive taxa reported
+by other tools were low-abundance \gls{otu}s that could be mapped to BLAST’s NT
+database with very high similarity ($E$ value, $<1e−50$). If the user’s primary
+goal is to focus on the most abundant microbial profiles, low-abundance \gls{otu}s
+may be filtered out postclustering, but care should be taken, as such low-abundance
+\gls{otu}s can be important members of communities \cite{Shade2014}.
+
+Although most open-source tools report an increased run time in comparison to UCLUST
+and USEARCH ~\ref{stateArtF5}, they provide the benefit of finding significantly
+fewer \gls{otu}s. In the case of SortMeRNA, longer reads (~150 \gls{bp}) are quicker
+to align than the same number of shorter reads (~100 \gls{bp}) due to many fewer
+high-scoring candidate reference sequences to analyze. Moreover, all of these tools
+support multilevel multithreading and can easily scale to modern big-data processing
+demands. An alternative to reducing run time is to filter out a substantial
+number of reads, as done by UPARSE; unfortunately, the filtering parameters are
+sensitive to different data, and choosing them manually by trial and error can be
+a time-consuming task with unpredictable outcomes in diversity.
+
+\begin{figure}[htbp]
+\includegraphics[width=\columnwidth]{chapter_otupicking_figures/stateArtF5.png}
+\caption[Runtime performance of all benchmarked software]{\textbf{Runtime performance of all benchmarked software.}
+All tests were performed using 1 to 32 coers on Intel Xeon CPU E5-2640 v3 at 2.60 GHz.
+Input files contained reads subsampled from the Global Gut \cite{Yatsunenko2012}.
+For serial performance, some tools do not show results for $10^8$ reads due to
+exceeding wall time limit (230 hours) or failed memory allocation. For parallel performance,
+a single file containing 1 million Illumina sequences was used over multiple threads}
+\label{stateArtF5}
+\end{figure}
 
 \subsection{Deblur rapidly resolves single-nucleotide community sequence patterns}\label{subsection_deblur}
