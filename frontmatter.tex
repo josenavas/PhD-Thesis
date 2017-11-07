@@ -1,0 +1,208 @@
+%
+%
+% UCSD Doctoral Dissertation Template
+% -----------------------------------
+% http:\\ucsd-thesis.googlecode.com
+%
+%
+
+
+%% REQUIRED FIELDS -- Replace with the values appropriate to you
+
+% No symbols, formulas, superscripts, or Greek letters are allowed
+% in your title.
+\title{Making pipelines and large processing microbial community studies available to any user, any time, any place}
+
+\author{Jose Antonio Navas Molina}
+\degreeyear{2018}
+
+% Master's Degree theses will NOT be formatted properly with this file.
+\degreetitle{Doctor of Philosophy}
+
+\field{Computer Science}
+\chair{Professor Rob Knight}
+% Uncomment the next line iff you have a Co-Chair
+% \cochair{Professor Cochair Semimaster}
+%
+% Or, uncomment the next line iff you have two equal Co-Chairs.
+%\cochairs{Professor Chair Masterish}{Professor Chair Masterish}
+
+%  The rest of the committee members  must be alphabetized by last name.
+\othermembers{
+Professor Nuno Bandeira\\
+Professor Vineet Bafna\\
+Professor Pieter Dorrestein\\
+Professor Larry Smarr\\
+}
+\numberofmembers{5} % |chair| + |cochair| + |othermembers|
+
+
+%% START THE FRONTMATTER
+%
+\begin{frontmatter}
+
+%% TITLE PAGES
+%
+%  This command generates the title, copyright, and signature pages.
+%
+\makefrontmatter
+
+%% DEDICATION
+%
+%  You have three choices here:
+%    1. Use the ``dedication'' environment.
+%       Put in the text you want, and everything will be formated for
+%       you. You'll get a perfectly respectable dedication page.
+%
+%
+%    2. Use the ``mydedication'' environment.  If you don't like the
+%       formatting of option 1, use this environment and format things
+%       however you wish.
+%
+%    3. If you don't want a dedication, it's not required.
+%
+%
+\begin{dedication}
+	TODO: dedication
+\end{dedication}
+
+% You are responsible for formatting here.
+%\begin{mydedication}
+%  \vspace{1in}
+%  \begin{flushleft}
+%    To me.
+%  \end{flushleft}
+%
+%   \vspace{2in}
+%   \begin{center}
+%     And you.
+%   \end{center}
+%
+%  \vspace{2in}
+%  \begin{flushright}
+%    Which equals us.
+%  \end{flushright}
+%\end{mydedication}
+
+
+
+%% EPIGRAPH
+%
+%  The same choices that applied to the dedication apply here.
+%
+
+% The style file will position the text for you.
+\begin{epigraph}
+  \emph{First, solve the problem. Then, write the code}\\
+  ---John Johnson
+
+
+  \emph{When debugging, novices insert corrective code; experts remove defective code}\\
+  ---Richard Pattis
+\end{epigraph}
+
+%% SETUP THE TABLE OF CONTENTS
+%
+\tableofcontents
+
+%%
+%% This block was needed to re-format the title of the glossary to match the
+%% headings of the list of figures and list of tables.
+%%
+%% start hack:
+\renewcommand{\glossarysection}[2][]{
+\newpage
+\noindent
+\centerline{LIST OF ABBREVIATIONS}
+}
+%% end hack
+
+\printglossary[title=List of Abbreviations,toctitle=List of Abbreviations,nonumberlist ]
+\listoffigures  % Uncomment if you have any figures
+\listoftables   % Uncomment if you have any tables
+
+%% ACKNOWLEDGEMENTS
+%
+%  While technically optional, you probably have someone to thank.
+%  Also, a paragraph acknowledging all coauthors and publishers (if
+%  you have any) is required in the acknowledgements page and as the
+%  last paragraph of text at the end of each respective chapter. See
+%  the OGS Formatting Manual for more information.
+%
+\begin{acknowledgements}
+ TODO: Acknowledgements
+
+    % Section~\ref{section_bigdata}, in full, reproduces the material as it
+    % appears in ``The microbiome and big data''. J. A. Navas-Molina, E. R. Hyde,
+	% J. G. Sanders and R. Knight. \emph{Current Opinion in Systems Biology},
+	% 2017, DOI: 10.1016/j.coisb.2017.07.003.
+
+\end{acknowledgements}
+
+
+%% VITA
+%
+%  A brief vita is required in a doctoral thesis. See the OGS
+%  Formatting Manual for more information.
+%
+\begin{vitapage}
+\begin{vita}
+  \item[2012] B.~S. in Informatics Engineering, Universitat Polit\`ecnia de Catalunya, Barcelona
+  \item[2013] M.~Sc. in Computer Science, University of Colorado at Boulder, Boulder
+  \item[2018] Ph.~D. in Computer Science, University of California, San Diego
+\end{vita}
+
+
+\begin{publications}
+
+    \item \textsl{Author names marked with $\dagger$ indicate shared first co-authorship}.
+
+    \item \textbf{J. A. Navas-Molina}, E. R. Hyde, J. G. Sanders, R. Knight. ``The microbiome and big data'', \emph{Current Opinion in Systems Biology}, 2017, DOI: 10.1016/j.coisb.2017.07.003.
+
+	\item \textbf{J. A. Navas-Molina}, J. M. Peralta-S\'anchez, A. Gonz\'alez, P. J. McMurdie, Y. V\'azquez-Baeza, Z. Xu, L. K. Ursell, C. Lauber, H. Zhou, S. J. Song, J. Huntley, G. L. Ackermann, D. Berg-Lyons, S. Holmes, J. G. Caporaso, R. Knight. ``Advancing our understanding of the human microbiome using QIIME'', \emph{Methods in Enzymology}, 2013, DOI: 10.1016/B978-0-12-407863-5.00019-8.
+
+	\item E. Kopylova, \textbf{J. A. Navas-Molina}, C. Mercier, Z. Xu, F. Mah\'e, Y. He, H. Zhou, T. Rognes, J. G. Caporaso, R. Knight. ``Open-source sequence clustering methods improve the state of the art'', \emph{mSystems}, 2017, DOI: 10.1128/mSystems.00003-15.
+
+	\item \textbf{J. A. Navas-Molina}, S. Mishra. ``Addressing memory exhaustion failures in Virtual Machines in a cloud environment'', \emph{43rd Annual IEEE/IFIP International Conference on Dependable Systems and Networks}, 2013, DOI: 10.1109/DSN.2013.6575330.
+
+	\item \textbf{J. A. Navas-Molina}, S. Mishra. ``CUDSwap: Tolerating Memory exhaustion failures in cloud computing'', \emph{International Conference on Cloud and Autonomic Computing}, 2014, DOI: 10.1109/ICCAC.2014.12.
+
+	\item A. Amir, D. McDonald, \textbf{J. A. Navas-Molina}, J. Debelius, J. T. Morton, E. R. Hyde, A. Robbins-Pianka, R. Knight. ``Correcting for microbial blooms in fecal samples during room-temperature shipping'', \emph{mSystems}, 2017, DOI: 10.1128/mSystems.00199-16.
+
+	\item A. Amir, D. McDonald, \textbf{J. A. Navas-Molina}, E. Kopylova, J. T. Morton, Z. Xu, E. P. Kightley, L. R. Thompson, E. R. Hyde, A. Gonz\'alez, R. Knight. ``Deblur rapidly resolves single-nucleotide community sequence patterns'', \emph{mSystems}, 2017, DOI: 10.1128/mSystems.00191-16
+
+	\item L. R. Thompson, J. G. Sanders, D. McDonald, A. Amir, J. Ladau, K. J. Locey, R. J. Prill, A. Tripathi, S. M. Gibbons, G. Ackermann, \textbf{J. A. Navas-Molina}, S. Janssen, E. Kopylova, Y. V\'azquez-Baeza, A. Gonz\'alez, J. T. Morton, S. Mirarab, Z. Xu, L. Jiang, M. F. Haroon, J. Kanbar, Q. Zhu, S. J. Song, T. Koscioleck, N. A. Bokulich, J. Lefler, C. J. Brislawn, G. Humphrey, S. W. Owens, J. Hampton-Marcell, D. Berg-Lyons, V. McKenzie, N. Fierer, J. A. Fuhrman, A. Clauset, R. L. Stevens, A. Shade, K. S. Pollard, K. D. Goodwin, J K. Jansson, J. A. Gilbert, R. Knight, The Earth Microbiome Project Consortium. ``A communal catalogue reveals Earth\'s multiscale microbial diversity''. \emph{Nature}, 2017, DOI: TODO.
+
+	\item $\dagger$R. A Quinn, \textbf{$\dagger$J. A. Navas-Molina}, $\dagger$E. R Hyde, S. Jin Song, Y. V\'azquez-Baeza, G. Humphrey, J. Gaffney, J. J Minich, A. V Melnik, J. Herschend, J. DeReus, A. Durant, R. J Dutton, M. Khosroheidari, C. Green, R. da Silva, P. C Dorrestein, R. Knight ``From sample to Multi-Omics conclusions in under 48 Hours'', \emph{mSystems}, 2016, DOI: 10.1128/mSystems.00038-16.
+
+	\item E. R. Hyde, \textbf{J. A. Navas-Molina}, S. J. Song, J. Kueneman, G. Ackerman, C. Cardona, G. Humphrey, D. Boyer, T. Weaver, J. Mendelson, V. McKenzie, J. Gilbert, R. Knight. ``The oral and skin microbiomes of captive Komodo dragons are significantly shared with their habitat'', \emph{mSystems}, 2016, DOI: 10.1128/mSystems.00046-16.
+
+	\item J. R. Rideout, Y. He, , \textbf{J. A. Navas-Molina}, W. A. Walters, L. K. Ursell, S. M. Gibbons, J. Chase, D. McDonald, A. Gonz\'alez, A. Robbins-Pianka, J. C. Clemente, J. A. Gilber, S. M. Huse, H. W. Zhou, R. Knight, J. C. Caporaso. ``Subsampled open-reference clustering creates consistent, comprehensive OTU definitions and scales to billions of sequences''. \emph{PeerJ}, 2014, DOI: 10.7717/peerj.545.
+
+	\item \noindent\rule[0.5ex]{\linewidth}{0.5pt}
+
+    \textsl{The following publications were not included as part of this dissertation, but were also significant byproducts of my doctoral training.}
+
+	\item Y. V\'azquez-Baeza, A. Gonzalez, L. Smarr, D. McDonald, J. T. Morton, \textbf{J. A. Navas-Molina}, R. Knight. ``Bringing the Dynamic Microbiome to Life with Animations'', \emph{Cell Host and Microbe}, 2017, DOI: 10.1016/j.chom.2016.12.009.
+
+	\item J. T Morton, J. Sanders, R. A Quinn, D. McDonald, A. Gonzalez, Y. V\'azquez-Baeza, \textbf{J. A. Navas-Molina}, S. Jin Song, J. L Metcalf, E. R Hyde, M. Lladser, P. C Dorrestein, R. Knight. ``Balance trees reveal microbial niche differentiation''. \emph{mSystems}, 2017, DOI: 10.1128/mSystems.00162-16.
+
+\end{publications}
+
+
+\end{vitapage}
+
+
+%% ABSTRACT
+%
+%  Doctoral dissertation abstracts should not exceed 350 words.
+%   The abstract may continue to a second page if necessary.
+%
+\begin{abstract}
+
+	TODO: Abstract
+
+\end{abstract}
+
+
+\end{frontmatter}

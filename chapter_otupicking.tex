@@ -1,0 +1,176 @@
+\glsresetall
+
+\section{Bottlenecks in large scale microbial studies: sequence clustering}\label{section_bottlenecks}
+
+Section~\ref{section_book} described in-depth a microbial community analysis pipeline.
+In that pipeline, one of the most time consuming steps is performing
+sequence clustering (also known as \gls{otu} picking). As a reminder, sequence
+clustering is the processing step during which sequences are grouped into \gls{otu}s
+based on sequence similarity. The \gls{otu}s found in a sample are used as an
+approximation of the species richness in the given niche. Sequence similariy is
+computed by sequence alignment \cite{Needleman1970, Smith1981}, an expensive
+computation task that is quadratic based on the length of the input sequences. With
+datasets containing from a few hundred thousand reads to a few billions of
+reads \cite{Goodwin2016}, performing all pairwise sequence alginments is too
+computationally expensive to be performed in a timely manner. The sequence clustering
+problem shares characteristics with the biological sequence database search problem,
+which has been studied for more than 30 years. Sections~\ref{subsection_openref},
+~\ref{subsection_soa} and~\ref{subsection_deblur}, contain a summary of my
+contributions to optimize the sequence clustering step of microbial community
+datasets analysis.
+
+\subsection{Subsampled open-reference clustering creates, consistent, comprehensive OTU definitions and scales to billions of sequences}\label{subsection_openref}
+
+Section~\ref{section_book} described three different \gls{otu} picking approaches:
+closed-reference, \emph{de-novo} and open-reference. The open-reference approach
+was the recommended approach because it offers benefits over the other two
+approaches. On one hand, the open-reference approach running time is shorter than
+the \emph{de-novo} approach because it includes a parallel closed-reference step.
+On the other hand, the open-reference approach doesn't discard any sequences from
+the input dataset because it contains a \emph{de-novo} step. However, if the microbial
+organisms present in an environment have not been previously characterized and included
+in the reference database, a large portion of the sequences will fail to cluster
+during the closed-reference step, generating long running times on the \emph{de-novo} step.
+In order to further reduce the running time of the open-reference approach, we presented
+a new approach: the subsampled open-reference approach \cite{Rideout2014}.
+
+The following paragraphs have been adapted from the original publication in
+\textsl{PeerJ, 2014}. As a contributor of this manuscript, I was involved on the
+discussions for the design of the subsampled open-reference pipeline, contributed
+to the source code, performed some of its evaluations, wrote sections of the
+manuscript and reviewed drafts of the manuscript.
+
+A detailed description of the workflow is illustrated in Figure~\ref{sub_open_ref_fig1}.
+It is implemented using UCLUST v1.2.22q \cite{Edgar2010} for clustering in \gls{qiime} 1.6.0 \cite{Caporaso2010}
+and later, though any sequence clustering software that provides support for \emph{de-novo}
+and closed-reference clustering could be substituted for UCLUST in an alternate
+implementation. The inputs provided to this method are demultiplexed,
+quality-filtered sequences, and a reference sequence collection (for example,
+the Greengenes 13 8 97\% \gls{otu} representative sequences \cite{DeSantis2006, McDonald2012}).
+First, sequences are clustered in parallel using a closed-reference \gls{otu} picking
+workflow, where sequences are queried against the reference database at percent
+identity \emph{s} (default 97\%). If a read matches a reference sequence at greater
+than or equal to \emph{s}\% identity, it is assigned to the \gls{otu} defined by that
+reference sequence. These are referred to as the reference \gls{otu}s. Next, a
+random subsample of \emph{n}\% (\emph{n} should be small, the default value in
+\gls{qiime} 1.8.0-dev and earlier is 0.1\%) of the sequences that failed to match
+the reference sequence collection are clustered \emph{de-novo}, and the cluster
+centroids for all resulting \gls{otu}s are used to define a new reference sequence
+collection. Those \gls{otu}s are referred to as the new reference \gls{otu}s.
+The sequences that were not included in the random subsample that was clustered
+\emph{de-novo} then go through an additional round of parallel closed-reference \gls{otu}
+picking, this time where they are clustered against the new reference \gls{otu}s based
+on matching a sequence in the new reference sequence collection at greater than
+or equal to \emph{s}\% identity. This creation of a “new reference database”
+allows us to harness the parallelization of our closed-reference \gls{otu} picking
+pipeline, greatly decreasing the time it takes for sequences that fail to hit the
+initial reference database to be clustered into \gls{otu}s. In the final clustering
+step, sequences that fail to hit a reference sequence during this final
+closed-reference \gls{otu} picking step are clustered \emph{de-novo}. These are
+referred to as the clean-up \gls{otu}s. Finally, the reference \gls{otu}s, new
+reference \gls{otu}s, and clean-up \gls{otu}s are combined into a single \gls{otu}
+table (i.e., table of counts of \gls{otu}s on a per-sample basis, as described in
+\cite{McDonald2012BIOM}), and this table, as well as a filtered table excluding
+\gls{otu}s with counts less than or equal to a user-defined threshold \emph{c},
+are provided to the user. By default, \emph{c = 2}, so each \gls{otu} is
+observed at least twice (i.e., singleton \gls{otu}s are excluded). Because
+many more of the sequences can be clustered using closed-reference \gls{otu}
+picking in this workflow, it can run in far less time than classic
+open-reference \gls{otu} picking.
+
+\begin{figure}[htbp]
+\includegraphics[width=\columnwidth]{chapter_otupicking_figures/workflow.png}
+\caption[Schematic of the subsampled open-reference OTU picking algorithm]{\textbf{Schematic of the subsampled open-reference OTU picking algorithm.}}
+\label{sub_open_ref_fig1}
+\end{figure}
+
+We validated the subsampled open-reference \gls{otu} picking workflow by comparing it
+to the classic (i.e. non subsampled) open-reference clustering methods on three
+different datasets: the Lauber "88 Soils" study \cite{Lauber2009} (referred to
+as \emph{88-soils} here), the Caporaso "Moving Pictures" study \cite{Caporaso2011}
+(referred to as \emph{moving-pictures} here), and the Costello "Whole Body" study
+\cite{Costello2009} (referred to as \emph{whole-body} here) using three metrics.
+First, we tested the correlation between sample alpha diversities (\gls{otu} counts,
+i.e. \gls{qiime}'s \emph{observed species} metric and \gls{pd} \cite{Faith1992}) based
+on subsampled open-reference \gls{otu} picking and the classic open-reference clustering.
+Next, we tested whether beta diversity patterns (as determined by weighted and
+unweighted UniFrac \cite{Lozupone2005} distances between samples) were consistent across \gls{otu}
+picking protocols, based on Mantel tests \cite{Mantel1967} with 1,000 Monte Carlo iterations.
+Finally we tested whether the same taxonomic profiles were obtained on a per-sample
+basis using each of the \gls{otu} picking methods. It is important to note that
+we are not tryinh to assess whether one method is better than another using these metrics.
+Instead we are testing whether the methods give highly correlated results.
+
+Alpha diversity (whole-body \gls{pd} Pearson \emph{r = 0.989}; 88-soils \gls{pd}
+Pearson \emph{r = 0.930}; moving-pictures \gls{pd} Pearson \emph{r = 0.996}),
+beta diversity (whole-body unweighted UniFrac Mantel \emph{r = 0.948};
+88-soils unweighted UniFrac Mantel \emph{r = 0.939}; moving-pictures
+unweighted UniFrac Mantel \emph{r = 0.991}) and taxonomic summaries (whole-body:
+\emph{r = 0.999} at phylum level, 0.999 at species level; 88-soils \emph{r = 0.999}
+at phylum level, \emph{r = 0.999} at species level; moving-pictures \emph{r = 0.999}
+at phylum level, \emph{r = 0.999} at species level) were highly correlated between
+classic and subsampled open-reference \gls{otu} picking. Minor differences likely
+arise from the non-deterministic step of rarefying all samples to even sampling
+depth before comparing samples. These results suggest that subsampled open-reference
+picking yields the same results as classic open-reference \gls{otu} picking,
+including identical numbers of sequences failing to hit the reference database,
+and therefore is a suitable replacement.
+
+\subsection{Open-source sequence clustering methods improve the State of the Art}\label{subsection_soa}
+
+Section~\ref{subsection_openref} described a faster approach to perform open-reference
+\gls{otu} picking. The \gls{otu}s quality and the final running time are dependant
+on the actual underlying tool being used to perform the \gls{otu} picking. In the
+previous section, UCLUST v1.2.22q \cite{Edgar2010} was used, which was
+developed in 2010, and had become the default option for researches performing
+micorbial community analysis. Since then, new tools have been published in the
+literature and a comprehensive benchmark of those tools was needed to evaluate if
+a new, faster, more accurate tool was available.
+
+The following paragraphs have been adapted from the original publication in
+\textsl{mSystems, 2016}. As a contributor of this manuscript, I was involved in
+the integration of the new tools in \gls{qiime}, contributed to the experimental
+design, provided input about the compatible \gls{otu} definitions,
+performed some of the benchmarks, wrote sections of the manuscript and
+reviewed drafts of the manuscript.
+
+Within 2012 and 2015, four new sequence-clustering tools have emerged: OTUCLUST
+from the Micca package \cite{Albanese2015}, Swarm \cite{Mahe2014, Mahe2015},
+SUMACLUST (C. Mercier, F. Boyer, E. Kopylova, P. Taberlet, A. Bonin, and E. Coissac,
+submitted for publication), and SortMeRNA \cite{Kopylova2012}. These tools
+include open-source implementation, and the latter three implement multilevel
+parallelization, providing excellent potential alternatives to UCLUST \cite{Edgar2010}.
+In this study, we evaluated these new open-source tools and compared them against
+UCLUST and USEARCH, two commonly used options available in \gls{qiime}, UPARSE
+\cite{Edgar2013}, the latest USEARCH amplicon analysis pipeline, and the three
+hierarchical clustering algorithms available in mothur \cite{Schloss2009}.
+
+A variety of datasets were chosen to evaluate the performance of these open-source
+\gls{otu} clustering approaches relative to \gls{qiime}’s UCLUST/USEARCH-based
+\gls{otu} clustering approaches as well as UPARSE. Two 16S \gls{rrna} gene simulated
+datasets were generated as FASTQ files. The first one (\emph{sim\_even}) represents
+an even distribution of 1,076 species, randomly subsampled from the Greengenes
+97\% \cite{DeSantis2006, McDonald2012} database and computationally amplified at
+the same depth (100 reads/amplicon) and length (150 \gls{bp}) using
+PrimerProspector \cite{Walters2011} for extracting the V4 region and the ART \cite{Huang2012}
+simulator for amplification and sequencing simulation. The second data set (\emph{sim\_staggered})
+represents the same 1,076 species as the \emph{sim\_even} data set but amplified at
+different (random) species abundance levels. We used four different previously published
+mock community data sets: three 16S \gls{rrna} gene mock community data sets
+(\emph{Bokulich\_2}, \emph{Bokulich\_3}, and \emph{Bokulich\_6}) from Bokulich
+et al. \cite{Bokulich2013} and an 18S gene (\emph{mock\_nematodes}) data set from
+Porazinska et al. \cite{Porazinska2009}. Finally, we also used three previously
+published natural data sets: a 16S \gls{rrna} gene soil data set (\emph{canadian\_soil})
+from Neufeld et al. \cite{Neufeld2011}, a 16S \gls{rrna} gene human data set (\emph{body\_sites})
+from Costello et al. \cite{Costello2009}, and an 18S \gls{rrna} gene soil data set
+(\emph{global\_soil}) from Ramirez et al. \cite{Ramirez2014}.
+
+Performance was evaluated using a variety of metrics, including the accuracy of
+\gls{otu} and taxonomic assignments, alpha diversity (within-sample diversity),
+beta diversity (between-sample diversity), and taxonomic correlation. All tools
+showed increased precision after the removal of singleton \gls{otu}s (\gls{otu}s
+consisting of only one sequence), so all results presented here have had singleton
+\gls{otu}s removed. Table 2 summarizes basic performance results for all software.
+
+
+\subsection{Deblur rapidly resolves single-nucleotide community sequence patterns}\label{subsection_deblur}

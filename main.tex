@@ -1,0 +1,310 @@
+%
+%
+% UCSD Doctoral Dissertation Template
+% -----------------------------------
+% http:\\ucsd-thesis.googlecode.com
+%
+%
+% ----------------------------------------------------------------------
+% WARNING:
+%
+%  This template has not endorced by OGS or any other official entity.
+%  The official formatting guide can be obtained from OGS.
+%  It can be found on the web here:
+%  http://ogs.ucsd.edu/AcademicAffairs/Documents/Dissertations_Theses_Formatting_Manual.pdf
+%
+%  No guaranty is made that this LaTeX class conforms to the official UCSD guidelines.
+%  Make sure that you check the final document against the Formatting Manual.
+%
+%  That being said, this class has been used successfully for publication of
+%  doctoral theses.
+%
+%  The ucsd.cls class files are only valid for doctoral dissertations.
+%
+%
+% ----------------------------------------------------------------------
+% GETTING STARTED:
+%
+% Lots of information can be found on the project wiki:
+% http://code.google.com/p/ucsd-thesis/wiki/GettingStarted
+%
+%
+% To make a pdf from this template use the command:
+%  pdflatex template
+%
+%
+% To get started please read the comments in this template file
+% and make changes as appropriate.
+%
+%
+% ----------------------------------------------------------------------
+%
+% A thesis using this template and class file was last successfully
+% submitted on 2009/03/19 (at least as far as I know).
+%
+% If you successfully submit a thesis with this package please let us
+% know.
+%
+% ----------------------------------------------------------------------
+% If you desire more control, please see the attached files:
+%
+%   * ucsd.cls    -- Class file
+%   * uct10.clo   -- Configuration files for font sizes 10pt, 11pt, 12pt
+%     uct11.clo
+%     uct12.clo
+%
+% ----------------------------------------------------------------------
+
+
+
+% Setup the documentclass
+% default options: 11pt, oneside, final
+%
+% fonts: 10pt, 11pt, 12pt -- are valid for UCSD dissertations.
+% sides: oneside, twoside -- note that two-sided theses are not accepted
+%                            by OGS.
+% mode: draft, final      -- draft mode switches to single spacing,
+%                            removes hyperlinks, and places a black box
+%                            at every overfull hbox (check these before
+%                            submission).
+% chapterheads            -- Include this if you want your chapters to read:
+%                              Chapter 1
+%                              Title of Chapter
+%
+%                            instead of
+%
+%                              1 Title of Chapter
+\def\RELEASE{}
+\ifdefined\RELEASE
+    \documentclass[12pt,chapterheads]{ucsd}
+\else
+    \documentclass[12pt,chapterheads,draft]{ucsd}
+\fi
+
+
+% Include all packages you need here.
+% Some standard options are suggested below.
+%
+% See the project wiki for information on how to use
+% these packages. Other useful packages are also listed there.
+%
+%   http://code.google.com/p/ucsd-thesis/wiki/GettingStarted
+
+
+
+%% AMS PACKAGES - Chances are you will want some or all
+%    of these if writing a dissertation that includes equations.
+%  \usepackage{amsmath, amscd, amssymb, amsthm}
+
+%% GRAPHICX - This is the standard package for
+%    including graphics for latex/pdflatex.
+\usepackage{graphicx}
+
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{array}
+\newcolumntype{P}[1]{>{\centering\arraybackslash}p{#1}}
+\newcolumntype{M}{>{\centering\arraybackslash} m{2cm} }
+
+\usepackage{hyphenat} % allow for hyphenated words to be further hyphenated
+                      % https://tex.stackexchange.com/a/2715
+\usepackage{rotating}
+\usepackage{multirow}
+\usepackage{textcomp}
+\usepackage{amssymb}
+\usepackage{url}
+
+%% SUBFIGURE - Use this to place multiple images in a
+%    single figure.  Subfigure will handle placement and
+%    proper captioning (e.g. Figure 1.2(a))
+% \usepackage{subfigure}
+
+%% LATIN MODERN FONTS (replacements for Computer Modern)
+% \usepackage{lmodern}
+% \usepackage[T1]{fontenc}
+
+
+%% INDEX
+%   Uncomment the following two lines to create an index:
+\usepackage{makeidx}
+\makeindex
+%   You will need to uncomment the \printindex line near the
+%   bibliography to display the index.  Use the command
+% \index{keyword}
+%   within the text to create an entry in the index for keyword.
+
+%% HYPERLINKS
+%   To create a PDF with hyperlinks, you need to include the hyperref package.
+%   THIS HAS TO BE THE LAST PACKAGE INCLUDED!
+%   Note that the options plainpages=false and pdfpagelabels exist
+%   to fix indexing associated with having both (ii) and (2) as pages.
+%   Also, all links must be black according to OGS.
+%   See: http://www.tex.ac.uk/cgi-bin/texfaq2html?label=hyperdupdest
+%   Note: This may not work correctly with all DVI viewers (i.e. Yap breaks).
+%   NOTE: hyperref will NOT work in draft mode, as noted above.
+ \usepackage[colorlinks=true, pdfstartview=FitV,
+             linkcolor=black, citecolor=black,
+             urlcolor=black, plainpages=false,
+             pdfpagelabels]{hyperref}
+% \hypersetup{ pdfauthor = {Your Name Here},
+%              pdftitle = {The Title of The Dissertation},
+%              pdfkeywords = {Keywords for Searching},
+%              pdfcreator = {pdfLaTeX with hyperref package},
+%              pdfproducer = {pdfLaTeX} }
+
+
+\usepackage{verbatim}
+
+\usepackage[toc,nopostdot,style=alttree]{glossaries}
+\glssetwidest{PERMANOVAX}% widest name
+\makeglossaries
+\include{abbreviations}
+
+\begin{document}
+
+
+%% FRONT MATTER
+%
+%  All of the front matter.
+%  This includes the title, degree, dedication, vita, abstract, etc..
+\include{frontmatter}
+
+
+%% DISSERTATION
+
+\chapter{What is the microbiome and why is it important?}\label{chapter_overview}
+\glsresetall
+
+The microbiome is the group of microorganisms that live in, on, and around us.
+Understanding the interactions between these microorganisms and their niche can
+lead to advances in a wide variety of research areas, including, but not limited
+to human and pet health \cite{Cox2015, Gevers2014, Vazquez-Baeza2016}, forensics
+\cite{Fierer2010, Hyde2017}, climate change \cite{Tas2014} and pharmaceuticals
+\cite{Novo2000, Maurice2013}.
+
+Researchers have at their disposal multiple technologies that allow them to make
+different inquiries about the microbial system that they are investigating.
+Target gene sequencing (such as 16S/18S \gls{rrna} or \gls{its} marker gene
+sequencing surveys) allows researchers to survey the different bacteria and
+Archaea present in a sample. Shotgun metagenomics provides a view of the functional
+potential of the microbial community, and metatranscriptomics confirms gene
+expression at a specific time point. Metabolomics surveys provide a view of
+the small molecules contained in a sample, either from microbial or host origin.
+The combination of the results of these technologies is crucial to establish
+correlations between the microorganisms and their environment. The vast amount
+of data generated by these technologies requires fast and efficient resources
+and tools for effective data analysis. The work presented in this thesis is
+motivated by the challenges that microbial ecologists are facing when analyzing
+such large microbiome datasets, some of which are summarized in the following
+section, which appeared in the journal \textsl{Current Opinion in Systems Biology, 2017}.
+
+% \include{chapter_overview}
+\section{The microbiome and big data}\label{section_bigdata}
+Add paper: ``The microbiome and big data''. J. A. Navas-Molina, E. R. Hyde, J. G. Sanders and R. Knight. \emph{Current Opinion in Systems Biology}, 2017, DOI: 10.1016/j.coisb.2017.07.003.
+
+\chapter{Analyzing large scale microbial community cohorts}\label{chapter_book}
+\glsresetall
+
+Chapter~\ref{chapter_overview} exposed some of the benefits and challenges of
+microbial studies. Specifically, two of the main problems during the analysis
+of microbial data are the biases and incompleteness of the reference databases
+that currently exist. In order to alleviate these issues, two large scale
+initiatives were born: the \gls{emp} \cite{Gilbert2010, Gilbert2014} and the
+\gls{agp} \footnote{\label{agpurl}\url{http://americangut.org}}.
+
+The \gls{emp} is a collaborative effort from more than 500 investigators aimed
+to characterize the Earth's microbial life using amplicon sequencing,
+metagenomics and metabolomics. The \gls{emp} is set to process up to 200,000
+samples for amplicon sequencing, releasing the data prior to publication and
+crowd sourcing the data analysis. More than 60 publications have already resulted
+from data generated by the \gls{emp} and these average 17 citations per paper per year
+\footnote{\label{emppuburl}\url{http://www.earthmicrobiome.org/publications/}}.
+Currently, the \gls{emp} is in its second phase, in which the researchers aim to
+generate the shotgun metagenomic assembly and metabolomic profile of 500 samples.
+
+The \gls{agp} is the largest crowd sourced, citizen science project, and aims to
+build the largest dataset of 16S \gls{rrna} marker gene sequences of human samples.
+In the \gls{agp}, the participants donate a sample (typically a stool sample,
+although the project is not limited to stool) as well as the financiat contribution to
+process, sequence and analyze the sample. \gls{agp} participants complete a
+questionnaire with dietary and lifestyle questions. The answers to the
+questionnaire are then categorized in a standard set of columns and are
+made publicly available jointly with the sequences, both de-identified.
+
+Both of those initiatives are releasing a powerful framework to the research
+community. On one hand, researches around the globe can mine the datasets to
+find new trends and generate new hypothesis. On the other hand, they can use
+it to contextualize their samples and increase the power of their own analysis
+by comparing them against these cohorts. The success of these type of initiatives,
+however, relies on the use of standardized practices for sample processing and
+analysis. The \gls{emp} released standard protocols
+\footnote{ \url{http://www.earthmicrobiome.org/protocols-and-standards/}} for
+sample collection and preparation in order to minimize technical differences
+between the samples, which have been widely adapted by the community and cited
+around 2000 times \textsuperscript{\ref{emppuburl}}. Normalizing the data
+analysis is as important as normalizing the data processing to minimize
+technical differences. \gls{qiime} \cite{Caporaso2010}, a previously introduced
+open-source pipeline, is one of the most successful \footnote{The original paper
+has been cited over 8,700 times according to Google Scholar at the moment of this writing}
+tools used to analyze microbial community analyses. With 155 scripts and over 1000 combined
+parameters, the risk of introducing technical differences during the data analysis
+step is high. Section~\ref{section_book}, published in the journal
+\textsl{Methods in Enzymology, 2013}, contains the first gold standard approach
+for the analysis of microbial community datasets, as well as providing to the
+researchers with directions and hints on how to minimize the introduction of
+technical differences while analyzing the data. As the lead contributor of this
+section, I co-wrote the text, generated the majority of the figures and wrote
+the IPython notebook \cite{Perez2007} attached to the publication.
+
+
+% \include{chapter_book}
+\section{Advancing our understanding of the human microbiome using QIIME}\label{section_book}
+Add paper: ``Advancing our understanding of the human microbiome using QIIME''. J. A. Navas-Molina, et al. \emph{Methods in Enzymology}, 2013, DOI: 10.1016/B978-0-12-407863-5.00019-8.
+
+\include{chapter_otupicking}
+\include{chapter_contributions}
+% \section{Bottlenecks in large scale microbial studies: OTU picking}\label{section_bottlenecks}
+
+\chapter{Better memory management in the cloud}\label{chapter_cudswap}
+\glsresetall
+% \include{chapter_memory_exhaustion}
+% \include{chapter_cudswap}
+\section{Addressing memory exhaustion failures in Virtual Machines in a cloud environment}\label{section_memory_exhaustion}
+Add paper: ``Addressing memory exhaustion failures in Virtual Machines in a cloud environment''. J. A. Navas-Molina, S. Mishra. \emph{43rd Annual IEEE/IFIP International Conference on Dependable Systems and Networks}, 2013, DOI: 10.1109/DSN.2013.6575330.
+\section{CUDSwap: Tolerating Memory exhaustion failures in cloud computing}\label{section_cudswap}
+Add paper: ``CUDSwap: Tolerating Memory exhaustion failures in cloud computing''. J. A. Navas-Molina, S. Mishra. \emph{International Conference on Cloud and Autonomic Computing}, 2014, DOI: 10.1109/ICCAC.2014.12.
+
+\chapter{Importance and challenges of meta-analyses}\label{chapter_meta}
+\glsresetall
+\section{Types of meta-analyses}\label{section_meta}
+\section{Why are meta-analysis hard?}\label{section_meta_hard}
+\section{Concluding remarks}\label{section_meta_conclusion}
+
+\chapter{Qiita: a web-based open source microbial study and meta-analysis management platform}\label{chapter_qiita}
+\glsresetall
+\section{Qiita accelerates microbiome meta-analyses from months to minutes}\label{section_qiita}
+Add paper: Qiita paper (in prep).
+
+\chapter{Making meta-analysis accessible to the clinician}\label{chapter_rapid_response}
+\glsresetall
+\section{From sample to multi-omics conclusions in under 48 hours}\label{section_48hours}
+\section{PlateMapper}\label{section_platemapper}
+% \section{Center For Microbiome Innovation's Rapid Response Precision Microbiome}
+
+\chapter{Conclusions}\label{chapter_conclusions}
+\glsresetall
+% \include{chapter_conclusions}
+
+\appendix
+\include{appendix}
+
+%% END MATTER
+\printindex %% Uncomment to display the index
+% \nocite{}  %% Put any references that you want to include in the bib
+%               but haven't cited in the braces.
+% \bibliographystyle{alpha}  %% This is just my personal favorite style.
+%                              There are many others.
+\bibliography{references}
+\bibliographystyle{plain}
+
+\end{document}
