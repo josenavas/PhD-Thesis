@@ -10,7 +10,7 @@ based on sequence similarity. The \gls{otu}s found in a sample are used as an
 approximation of the species richness in the given niche. Sequence similariy is
 computed by sequence alignment \cite{Needleman1970, Smith1981}, an expensive
 computation task that is quadratic based on the length of the input sequences. With
-datasets containing from a few hundred thousand reads to a few billions of
+datasets containing from a few hundred thousand reads to a few billion
 reads \cite{Goodwin2016}, performing all pairwise sequence alginments is too
 computationally expensive to be performed in a timely manner. The sequence clustering
 problem shares characteristics with the biological sequence database search problem,
@@ -19,7 +19,7 @@ which has been studied for more than 30 years. Sections~\ref{subsection_openref}
 contributions to optimize the sequence clustering step of microbial community
 datasets analysis.
 
-\subsection{Subsampled open-reference clustering creates, consistent, comprehensive OTU definitions and scales to billions of sequences}\label{subsection_openref}
+\subsection{Subsampled open-reference clustering creates consistent, comprehensive OTU definitions and scales to billions of sequences}\label{subsection_openref}
 
 Section~\ref{section_book} described three different \gls{otu} picking approaches:
 closed-reference, \emph{de-novo} and open-reference. The open-reference approach
@@ -98,7 +98,7 @@ unweighted UniFrac \cite{Lozupone2005} distances between samples) were consisten
 picking protocols, based on Mantel tests \cite{Mantel1967} with 1,000 Monte Carlo iterations.
 Finally we tested whether the same taxonomic profiles were obtained on a per-sample
 basis using each of the \gls{otu} picking methods. It is important to note that
-we are not tryinh to assess whether one method is better than another using these metrics.
+we are not trying to assess whether one method is better than another using these metrics.
 Instead we are testing whether the methods give highly correlated results.
 
 Alpha diversity (whole-body \gls{pd} Pearson \emph{r = 0.989}; 88-soils \gls{pd}
@@ -122,7 +122,7 @@ Section~\ref{subsection_openref} described a faster approach to perform open-ref
 \gls{otu} picking. The \gls{otu}s quality and the final running time are dependant
 on the actual underlying tool being used to perform the \gls{otu} picking. In the
 previous section, UCLUST v1.2.22q \cite{Edgar2010} was used, which was
-developed in 2010, and had become the default option for researches performing
+developed in 2010, and had become the default option for researchers performing
 micorbial community analysis. Since then, new tools have been published in the
 literature and a comprehensive benchmark of those tools was needed to evaluate if
 a new, faster, more accurate tool was available.
@@ -134,7 +134,7 @@ design, provided input about the compatible \gls{otu} definitions,
 performed some of the benchmarks, wrote sections of the manuscript and
 reviewed drafts of the manuscript.
 
-Within 2012 and 2015, four new sequence-clustering tools have emerged: OTUCLUST
+Between 2012 and 2015, four new sequence-clustering tools have emerged: OTUCLUST
 from the Micca package \cite{Albanese2015}, Swarm \cite{Mahe2014, Mahe2015},
 SUMACLUST (C. Mercier, F. Boyer, E. Kopylova, P. Taberlet, A. Bonin, and E. Coissac,
 submitted for publication), and SortMeRNA \cite{Kopylova2012}. These tools
@@ -202,7 +202,7 @@ false-positive taxa (followed by OTUCLUST and USEARCH). For UPARSE, this was
 expected, as a large proportion of reads was filtered out prior to clustering,
 leaving evidence of only the most abundant taxa (\gls{otu}s comprised of
 hundreds of thousands of reads). The majority of false-positive taxa reported
-by other tools were low-abundance \gls{otu}s that could be mapped to BLAST’s NT
+by other tools were low-abundance \gls{otu}s that could be mapped to \gls{blast}’s NT
 database with very high similarity ($E$ value, $<1e−50$). If the user’s primary
 goal is to focus on the most abundant microbial profiles, low-abundance \gls{otu}s
 may be filtered out postclustering, but care should be taken, as such low-abundance
@@ -220,7 +220,9 @@ sensitive to different data, and choosing them manually by trial and error can b
 a time-consuming task with unpredictable outcomes in diversity.
 
 \begin{figure}[htbp]
-\includegraphics[width=\columnwidth]{chapter_otupicking_figures/stateArtF5.png}
+\begin{center}
+\includegraphics[height=0.55\textheight]{chapter_otupicking_figures/stateArtF5.png}
+\end{center}
 \caption[Runtime performance of all benchmarked software]{\textbf{Runtime performance of all benchmarked software.}
 All tests were performed using 1 to 32 coers on Intel Xeon CPU E5-2640 v3 at 2.60 GHz.
 Input files contained reads subsampled from the Global Gut \cite{Yatsunenko2012}.
@@ -231,3 +233,116 @@ a single file containing 1 million Illumina sequences was used over multiple thr
 \end{figure}
 
 \subsection{Deblur rapidly resolves single-nucleotide community sequence patterns}\label{subsection_deblur}
+
+Sections~\ref{subsection_openref} and~\ref{subsection_soa} were focused on
+improving the performance of the \gls{otu} picking process for analyzing
+microbial community datasets. \gls{otu}s are defined to approximate the species
+richness of a sample, and reduce the effects of the sequencing error from \gls{ngs}
+technologies. However, \gls{otu}s are based on an arbitrary sequence identity
+threshold (typically 97\%) which reduces the phylogenetic resolution since two
+sequences that are more similar than the identity threshold can't be differentiated.
+To assess this problem, we presented a new method, Deblur, that instead of grouping
+sequences based on an arbitrary sequence identy threshold, uses statistical
+methods to find the underlying true sequence and remove erroneus sequences \cite{Amir2017}.
+
+The following paragraphs have been adapted from the original publication in
+\textsl{mSystems, 2016}. As a contributor of this manuscript, I was involved on
+the discussions of the Deblur pipeline, I contributed to the source code, generated
+figures for the manuscript and reviewed drafts of the manuscript.
+
+Similar in concept to AmpliconNoise \cite{Quince2011}, a denoising method for
+pyrosequencing, Deblur, like DADA2 \cite{Callahan2016} and UNOISE2 \cite{Edgar2016},
+attempts to obtain single-nucleotide resolution from Illumina data with
+statistical methods to infer the putative true sequences within a sample that
+give rise to the distribution of observed error-prone sequences. Unlike DADA2 and
+UNOISE2, Deblur operates on each sample independently. It compares
+sequence-to-sequence Hamming distances within a sample to an upper-bound error
+profile combined with a greedy algorithm to obtain single-nucleotide resolution.
+The Deblur algorithm is implemented as follows (see Figure~\ref{figure_deblur}).
+First, sequences are sorted by abundance. Second, from the most to least
+abundant sequence, the number of predicted error-derived reads is subtracted
+from neighboring reads based on their Hamming distance, using an upper bound on
+the error probability. A parameterized maximal probability for indels
+(defaulting to 0.01) and a parameterized mean read error rate for normalization
+(defaulting to 0.5\%) are included. Finally, any sequence whose abundance drops
+to 0 after a subtraction is removed from the list of valid sequences. Sequences
+not considered to be valid (i.e., noise) are removed. After applying Deblur,
+only reads likely to have been presented to the sequencer are retained.
+However, it is possible that the reads would still contain chimeras originating
+from PCR. Reads are filtered for de novo chimeras using UCHIME \cite{Edgar2011}
+as implemented by VSEARCH \cite{Rognes2016} using modified parameters.
+
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[height=0.70\textheight]{chapter_otupicking_figures/deblurWorkflow.pdf}
+\end{center}
+\caption[The deblur pipeline]{\textbf{The deblur pipeline.}
+A demultiplexed and quality filtered fasta/fastq file (or a directory of per-sample
+fasta/fastq files) is used as the input to the pipeline. Following initial
+splitting to per-sample fasta files, all processing is done independently on each
+sample. Sequences are trimmed and dereplicated with singletons removed. Reads are
+then depleted from sequencing artifacts either using a set of known sequencing
+artifacts (such as PhiX) (negative filtering) or using a set of known 16S sequences
+(positive filtering). Resulting nonartifact reads are then aligned for easy indel
+detection. This multiple sequence alignment is then used as the input for the Deblur
+algorithm. Each Deblurred sample is then checked for de novo chimeras, and the
+resulting s\gls{otu}s from all samples are combined into a single BIOM \cite{McDonald2012BIOM}
+table (with sequences labeled as the s\gls{otu} IDs)}
+\label{figure_deblur}
+\end{figure}
+
+Stability (i.e., obtaining the same s\gls{otu} across different samples) is becoming
+critical as more study designs exploit existing samples from resources like the
+Earth Microbiome Project \cite{Gilbert2014} or require integration of sequence
+data collected over time such as the American Gut Project \footnote{\url{http://americangut.org}}.
+We compared the levels of stability of Deblur and DADA2 using technical replicates
+from a data set consisting of 40 individuals, each with one fecal sample sequenced
+twice on two separate MiSeq runs \cite{Hildebrand2014}. s\gls{otu}s for each run were
+assessed separately, and we compared the fractions of s\gls{otu}s from one run to
+those present in the second run, as a function of the minimal s\gls{otu} frequency.
+Deblur showed greater stability than DADA2 at a higher frequency cutoff (Figure ~\ref{figure_deblur_bench}-A),
+indicating that a larger fraction of s\gls{otu}s from the first run were also identified in the second run.
+
+Next, we compared DADA2 and Deblur using a complex natural community and a previously
+published data set of fecal samples from two species of howler monkeys \cite{Amato2016}.
+Deblur and DADA2 detected 1,938 and 1,636 s\gls{otu}s, respectively, after removal
+of s\gls{otu}s with fewer than 10 total reads from each method. Following filtering,
+about 70\% of the s\gls{otu}s were identical between the methods. As expected, both
+methods identified differential s\gls{otu}s (permutation-based rank mean test;
+0.1 false-discovery rate–Benjamini-Hochberg method [FDR-BH] control value) with 61\%
+of Deblur s\gls{otu}s differentiating between primate species (1,193/1,938),
+compared to 55\% of DADA2 s\gls{otu}s (891/1,636). To assess whether the
+s\gls{otu}s unique to either method were from increased numbers of artifacts,
+we used \gls{blast} \cite{Altschul1990} to compare each unique sequence against
+nt/nr and plotted the fraction of s\gls{otu}s with zero, one, or two mismatches.
+We observed that s\gls{otu}s unique to Deblur showed fewer mismatches than those
+unique to DADA2 (Figure ~\ref{figure_deblur_bench}-B). The distribution of
+s\gls{otu}s over the monkey samples suggests that the s\gls{otu}s unique to Deblur
+are more plausible because they show a pattern similar to those identified by both
+methods, whereas the s\gls{otu}s unique to DADA2 have markedly different patterns
+of clusters of unique s\gls{otu}s within single samples (Figure ~\ref{figure_deblur_bench}-C).
+
+Finally, to explore performance characteristics, we used a MiSeq run from the
+stability analysis in order to assess computational space and time demands of DADA2,
+Deblur, and UNOISE2 (where possible) over an increasing number of samples.
+UNOISE2 was an order of magnitude faster than Deblur, while Deblur was an order of
+magnitude faster than DADA2 (Figure ~\ref{figure_deblur_bench}-D).
+
+\begin{figure}[htbp]
+\includegraphics[width=\columnwidth]{chapter_otupicking_figures/deblurBench.pdf}
+\caption[Benchmarks of \gls{otu} picking tools on natural communities]{\textbf{Benchmarks of \gls{otu} picking tools on natural communities.}
+(A) Stability analysis on experimental technical repeats. Data indicate fractions
+of overlapping s\gls{otu}s from two technical replicates in all \gls{otu}s as a
+function of the minimal frequency threshold present in one of the repeats.
+(B and C) Application of Deblur in the howler monkey data set. (B) Fraction of
+sequences matching entries in the \gls{ncbi} nr/nt database
+(as of 1 December 2016) with 0.1 or 2 mismatches (red, green, or blue, respectively)
+from s\gls{otu}s unique to Deblur or to DADA2 or present in both (left to right).
+(C) Heat maps showing s\gls{otu}s (rows) in common with Deblur and DADA2, as well
+as those unique to Deblur and DADA2 (bottom, middle, and top rows, respectively).
+Samples (columns) are sorted by species and habitat. A total of 200 s\gls{otu}s per group
+(i.e., common, unique to Deblur, or unique to DADA2) were randomly selected for
+visualization purposes. (D) Single-threaded runtime comparison of Deblur, DADA2,
+and UNOISE2 against one of the stability MiSeq runs at increasing numbers of samples.}
+\label{figure_deblur_bench}
+\end{figure}
