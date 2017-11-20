@@ -1,13 +1,14 @@
 \section{Bottlenecks in large scale microbial studies: sequence clustering}\label{section_bottlenecks}
 
-Section~\ref{section_book} described in-depth a microbial community analysis pipeline.
-In that pipeline, one of the most time consuming steps is performing
-sequence clustering (also known as \gls{otu} picking). As a reminder, sequence
-clustering is the processing step during which sequences are grouped into \gls{otu}s
+Section~\ref{section_book} described a microbial community analysis pipeline in depth.
+In that pipeline, one of the most time-consuming steps is performing
+sequence clustering (also known as \gls{otu} picking). Sequence
+clustering is the processing step that groups sequences into \gls{otu}s
 based on sequence similarity. The \gls{otu}s found in a sample are used as an
-approximation of the species richness in the given niche. Sequence similariy is
-computed by sequence alignment \cite{Needleman1970, Smith1981}, an expensive
-computation task that is quadratic based on the length of the input sequences. With
+approximation of the species richness in the given niche. Sequence similarity is
+computed using pairwise sequence alignment \cite{Needleman1970, Smith1981}, an expensive
+computational task that is quadratic in the length of the input sequences and
+the number of input sequences. With
 datasets containing from a few hundred thousand reads to a few billion
 reads \cite{Goodwin2016}, performing all pairwise sequence alginments is too
 computationally expensive to be performed in a timely manner. The sequence clustering
@@ -22,27 +23,27 @@ datasets analysis.
 Section~\ref{section_book} described three different \gls{otu} picking approaches:
 closed-reference, \emph{de-novo} and open-reference. The open-reference approach
 was the recommended approach because it offers benefits over the other two
-approaches. On one hand, the open-reference approach running time is shorter than
+approaches. The open-reference approach run time is shorter than
 the \emph{de-novo} approach because it includes a parallel closed-reference step.
-On the other hand, the open-reference approach doesn't discard any sequences from
+Additionally, the open-reference approach doesn't discard any sequences from
 the input dataset because it contains a \emph{de-novo} step. However, if the microbial
 organisms present in an environment have not been previously characterized and included
-in the reference database, a large portion of the sequences will fail to cluster
+in the reference database, many sequences will fail to cluster
 during the closed-reference step, generating long running times on the \emph{de-novo} step.
-In order to further reduce the running time of the open-reference approach, we presented
+To further reduce the running time of the open-reference approach, we presented
 a new approach: the subsampled open-reference approach \cite{Rideout2014}.
 
-The following paragraphs have been adapted from the original publication in
-\textsl{PeerJ, 2014}. As a contributor of this manuscript, I was involved on the
-discussions for the design of the subsampled open-reference pipeline, contributed
+The following text has been adapted from the original publication in
+\textsl{PeerJ, 2014}. As a contributor to this manuscript, I was involved in the
+design of the subsampled open-reference pipeline, contributed
 to the source code, performed some of its evaluations, wrote sections of the
 manuscript and reviewed drafts of the manuscript.
 
 A detailed description of the workflow is illustrated in Figure~\ref{sub_open_ref_fig1}.
-It is implemented using UCLUST v1.2.22q \cite{Edgar2010} for clustering in \gls{qiime} 1.6.0 \cite{Caporaso2010}
+It is implemented using UCLUST v1.2.22q \cite{Edgar2010} for clustering in \gls{qiime}-1.6.0 \cite{Caporaso2010}
 and later, though any sequence clustering software that provides support for \emph{de-novo}
-and closed-reference clustering could be substituted for UCLUST in an alternate
-implementation. The inputs provided to this method are demultiplexed,
+and closed-reference clustering could be substituted for UCLUST. The inputs
+provided to this method are demultiplexed,
 quality-filtered sequences, and a reference sequence collection (for example,
 the Greengenes 13 8 97\% \gls{otu} representative sequences \cite{DeSantis2006, McDonald2012}).
 First, sequences are clustered in parallel using a closed-reference \gls{otu} picking
@@ -94,7 +95,7 @@ on subsampled open-reference \gls{otu} picking and the classic open-reference cl
 Next, we tested whether beta diversity patterns (as determined by weighted and
 unweighted UniFrac \cite{Lozupone2005} distances between samples) were consistent across \gls{otu}
 picking protocols, based on Mantel tests \cite{Mantel1967} with 1,000 Monte Carlo iterations.
-Finally we tested whether the same taxonomic profiles were obtained on a per-sample
+Finally, we tested whether the same taxonomic profiles were obtained on a per-sample
 basis using each of the \gls{otu} picking methods. It is important to note that
 we are not trying to assess whether one method is better than another using these metrics.
 Instead we are testing whether the methods give highly correlated results.
@@ -125,8 +126,8 @@ micorbial community analysis. Since then, new tools have been published in the
 literature and a comprehensive benchmark of those tools was needed to evaluate if
 a new, faster, more accurate tool was available.
 
-The following paragraphs have been adapted from the original publication in
-\textsl{mSystems, 2016}. As a contributor of this manuscript, I was involved in
+The following material has been adapted from the original publication in
+\textsl{mSystems, 2016}. As a contributor to this manuscript, I was involved in
 the integration of the new tools in \gls{qiime}, contributed to the experimental
 design, provided input about the compatible \gls{otu} definitions,
 performed some of the benchmarks, wrote sections of the manuscript and
@@ -168,24 +169,25 @@ Performance was evaluated using a variety of metrics, including the accuracy of
 beta diversity (between-sample diversity), and taxonomic correlation. All tools
 showed increased precision after the removal of singleton \gls{otu}s (\gls{otu}s
 consisting of only one sequence), so all results presented here have had singleton
-\gls{otu}s removed. Figure~\ref{stateArtT2} summarizes basic performance results
+\gls{otu}s removed. Table~\ref{stateArtT2} summarizes basic performance results
 for all software.
 
-\begin{figure}[htbp]
-\includegraphics[width=\columnwidth]{chapter_otupicking_figures/stateArtT2.pdf}
-\caption[Benchmark summary]{\textbf{Benchmark summary.} \gls{otu} counts do not
-include singletons. F measure (F1) is for assigned taxonomies at the genus level.
-The \gls{pd} whole-tree column for \emph{Bokulich\_2} and \emph{Bokulick\_3}
-represent \gls{pd} intervals across various sampling depths. Procrustes $M^2$
-(the sum of squared deviations or the dissimilarity of two datasets for UniFrac
-\gls{pcoa}) and rho (Pearson's correlation coefficient for taxonomies at genus
-level) values are with repect to UCLUST (default for \gls{qiime} versions 1.0.0
-to 1.9.1). Monte Carlo $P$ values were not included, since all values were
-$<0.05$ except for \emph{de novo} usearch52 versus uclust ($P = 0.09$). The darkest
-blue shades represent the highest F1 scores, while the darkest red shades represent
-results closest to those obtained with UCLUST}
-\label{stateArtT2}
-\end{figure}
+% TODO: Change this figure to a table
+% \begin{figure}[htbp]
+% \includegraphics[width=\columnwidth]{chapter_otupicking_figures/stateArtT2.pdf}
+% \caption[Benchmark summary]{\textbf{Benchmark summary.} \gls{otu} counts do not
+% include singletons. F measure (F1) is for assigned taxonomies at the genus level.
+% The \gls{pd} whole-tree column for \emph{Bokulich\_2} and \emph{Bokulick\_3}
+% represent \gls{pd} intervals across various sampling depths. Procrustes $M^2$
+% (the sum of squared deviations or the dissimilarity of two datasets for UniFrac
+% \gls{pcoa}) and rho (Pearson's correlation coefficient for taxonomies at genus
+% level) values are with repect to UCLUST (default for \gls{qiime} versions 1.0.0
+% to 1.9.1). Monte Carlo $P$ values were not included, since all values were
+% $<0.05$ except for \emph{de novo} usearch52 versus uclust ($P = 0.09$). The darkest
+% blue shades represent the highest F1 scores, while the darkest red shades represent
+% results closest to those obtained with UCLUST}
+% \label{stateArtT2}
+% \end{figure}
 
 We found that Swarm, SUMACLUST, UCLUST, and UPARSE (with relaxed parameters)
 performed equally well on simulated datasets where the ground truth was well
@@ -203,7 +205,7 @@ hundreds of thousands of reads). The majority of false-positive taxa reported
 by other tools were low-abundance \gls{otu}s that could be mapped to \gls{blast}’s NT
 database with very high similarity ($E$ value, $<1e−50$). If the user’s primary
 goal is to focus on the most abundant microbial profiles, low-abundance \gls{otu}s
-may be filtered out postclustering, but care should be taken, as such low-abundance
+may be filtered out postclustering, but care should be taken, because such low-abundance
 \gls{otu}s can be important members of communities \cite{Shade2014}.
 
 Although most open-source tools report an increased run time in comparison to UCLUST
@@ -237,15 +239,15 @@ improving the performance of the \gls{otu} picking process for analyzing
 microbial community datasets. \gls{otu}s are defined to approximate the species
 richness of a sample, and reduce the effects of the sequencing error from \gls{ngs}
 technologies. However, \gls{otu}s are based on an arbitrary sequence identity
-threshold (typically 97\%) which reduces the phylogenetic resolution since two
+threshold (typically 97\%), which reduces the phylogenetic resolution, because two
 sequences that are more similar than the identity threshold can't be differentiated.
 To assess this problem, we presented a new method, Deblur, that instead of grouping
 sequences based on an arbitrary sequence identy threshold, uses statistical
 methods to find the underlying true sequence and remove erroneus sequences \cite{Amir2017}.
 
-The following paragraphs have been adapted from the original publication in
-\textsl{mSystems, 2016}. As a contributor of this manuscript, I was involved on
-the discussions of the Deblur pipeline, I contributed to the source code, generated
+The following material has been adapted from the original publication in
+\textsl{mSystems, 2016}. As a contributor to this manuscript, I was involved in
+the discussions of the Deblur pipeline, contributed to the source code, generated
 figures for the manuscript and reviewed drafts of the manuscript.
 
 Similar in concept to AmpliconNoise \cite{Quince2011}, a denoising method for
