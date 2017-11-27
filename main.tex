@@ -379,7 +379,59 @@ Add paper: Qiita paper (in prep).
 
 \chapter{Making meta-analysis accessible to the clinician}\label{chapter_rapid_response}
 \glsresetall
+
+Section~\ref{section_bigdata} introduced one of the most important challenges in
+microbiome research: translating the research results from the laboratory to
+everyday life, in particular to human health. The human body is a complex ecosystem
+hosting a wide variety of microorganisms that play key roles in our well-being.
+However, this aspect of the human body is generally ignored during routine
+doctor's visits.
+
+One of the reasons why microbiome analyses are not routinely used in the clinic
+is because microbiome research is still in its infancy and more well-designed
+studies on clinical cohorts are needed to identify microbiome-host interactions
+that can directly be applied to human helth. Reproducibility of these results,
+integration of multiple datasets and standardization of the data is key to achieve
+the quality results needed for clinical applications. Sections~\ref{section_book}
+and~\ref{chapter_qiita} presented improvements to these challenges.
+
+Another challenge for bringing microbiome analysis to the clinic is the time that
+it takes to perform a microbial community analysis. Typical microbiome
+analyses can take from months to years to complete. However, the time to
+perform these analyses can be reduced by following \gls{sop} for sample handling
+and processing, using an analysis standardization framework, optimizing analysis
+bottlenecks and employing an interdisciplinary team of experts to analyze the data.
+Section~\ref{section_48hours} shows how, using the work presented so far in this
+dissertation and the interaction of an interdisciplinary team of analysis experts,
+microbial community analyses can be performed in under 48 hours, a time frame short
+enough to provide useful information in a clinical setting.
+
+The analysis effort described in section~\ref{section_48hours} provided enough
+information to identify additonal bottlenecks that could be alleviated to further
+reduce analysis time. Specifically, one of the bottlenecks was the transfer of sample
+processing information from the wet lab to the dry lab, as well as an efficient
+method to record said information, which is critical to assess the quality of the sequencing run.
+Section~\ref{section_platemapper} presents a system built on top of Qiita that
+provides an easy way to record all the wet lab information and easily transfer
+it to the dry lab. Furthermore, by systematically storing the information in a
+structured way, human interaction can be reduced in multiple parts of the pipeline,
+so analyses can be run automatically as soon as the sequences are available.
+This generates an initial overview of the data as fast as possible, providing
+the data analyst with enough information to decide how to move forward with a
+more in-depth analysis.
+
+The material in section~\ref{section_48hours} was published in \textsl{mSystems, 2013}.
+As a co-first author of this publication, I performed the fast initial 16S analysis,
+generated the starting point data for more in-depth analyses of the 16S data,
+directed the 16S analysis team, generated figures for the publication, and wrote the text.
+
+% The material in section~\ref{section_platemapper} is submitted for publication in
+% \textsl{TODO}. As a first author of this publication, I have been involved in the
+% design and implementation of the overall PlateMapper system and wrote the text.
+
 \section{From sample to multi-omics conclusions in under 48 hours}\label{section_48hours}
+Add paper: ``From sample to multi-omics conclusions in under 48 hours''. R. A. Quinn, J. A. Navas-Molina, E. R. Hyde, S. J. Song, Y. V\'azquez-Baeza, G. Humphrey, J. Gaffney, J.J. Minich, A. V. Melnik, J. Herschend, J. DeReus, A. Durant, R. J. Dutton, M. Khosroheidari, C. Green, R. da Silva, P. C. Dorrestein, R. Knight. \emph{mSystems}, 2016, DOI: 10.1128/mSystems.00038-16.
+
 \section{PlateMapper}\label{section_platemapper}
 
 \chapter{Conclusions}\label{chapter_conclusions}
