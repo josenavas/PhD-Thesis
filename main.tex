@@ -155,6 +155,8 @@
 
 \usepackage{verbatim}
 
+\usepackage{listings}
+
 \usepackage[toc,nopostdot,style=alttree]{glossaries}
 \glssetwidest{PERMANOVAX}% widest name
 \makeglossaries
@@ -198,9 +200,7 @@ motivated by the challenges that microbial ecologists are facing when analyzing
 such large microbiome datasets, some of which are summarized in the following
 section, which appeared in the journal \textsl{Current Opinion in Systems Biology, 2017}.
 
-% \include{chapter_overview}
-\section{The microbiome and big data}\label{section_bigdata}
-Add paper: ``The microbiome and big data''. J. A. Navas-Molina, E. R. Hyde, J. G. Sanders and R. Knight. \emph{Current Opinion in Systems Biology}, 2017, DOI: 10.1016/j.coisb.2017.07.003.
+\include{chapter_overview}
 
 \chapter{Analyzing large scale microbial community cohorts}\label{chapter_book}
 \glsresetall
@@ -257,10 +257,7 @@ publication, I co-wrote the text, generated the majority of the figures and wrot
 the IPython notebook \cite{Perez2007} attached to the publication.
 
 
-% \include{chapter_book}
-\section{Advancing our understanding of the human microbiome using QIIME}\label{section_book}
-Add paper: ``Advancing our understanding of the human microbiome using QIIME''. J. A. Navas-Molina, et al. \emph{Methods in Enzymology}, 2013, DOI: 10.1016/B978-0-12-407863-5.00019-8.
-
+\include{chapter_book}
 \include{chapter_otupicking}
 \include{chapter_contributions}
 
@@ -301,12 +298,8 @@ Computing, 2014}, respectivelly. As the first author of these publications, I
 conceived the idea, designed and implemented the software, designed and executed
 the benchmarks and wrote the text.
 
-% \include{chapter_memory_exhaustion}
-% \include{chapter_cudswap}
-\section{Addressing memory exhaustion failures in Virtual Machines in a cloud environment}\label{section_memory_exhaustion}
-Add paper: ``Addressing memory exhaustion failures in Virtual Machines in a cloud environment''. J. A. Navas-Molina, S. Mishra. \emph{43rd Annual IEEE/IFIP International Conference on Dependable Systems and Networks}, 2013, DOI: 10.1109/DSN.2013.6575330.
-\section{CUDSwap: Tolerating Memory exhaustion failures in cloud computing}\label{section_cudswap}
-Add paper: ``CUDSwap: Tolerating Memory exhaustion failures in cloud computing''. J. A. Navas-Molina, S. Mishra. \emph{International Conference on Cloud and Autonomic Computing}, 2014, DOI: 10.1109/ICCAC.2014.12.
+\include{chapter_memory_exhaustion}
+\include{chapter_cudswap}
 
 \chapter{Meta-analyses: importance, challenges and solutions}\label{chapter_qiita}
 \glsresetall
@@ -374,8 +367,7 @@ is submitted for publication in \textsl{Nature Methods}. As a first
 co-author of this publication, I have been involved in the design and implementation of
 the database, graphical user interface and plugin system of Qiita and wrote the text.
 
-\section{Qiita accelerates microbiome meta-analyses from months to minutes}\label{section_qiita}
-Add paper: Qiita paper (in prep).
+\include{chapter_qiita}
 
 \chapter{Making meta-analysis accessible to the clinician}\label{chapter_rapid_response}
 \glsresetall
@@ -429,14 +421,10 @@ directed the 16S analysis team, generated figures for the publication, and wrote
 % \textsl{TODO}. As a first author of this publication, I have been involved in the
 % design and implementation of the overall PlateMapper system and wrote the text.
 
-\section{From sample to multi-omics conclusions in under 48 hours}\label{section_48hours}
-Add paper: ``From sample to multi-omics conclusions in under 48 hours''. R. A. Quinn, J. A. Navas-Molina, E. R. Hyde, S. J. Song, Y. V\'azquez-Baeza, G. Humphrey, J. Gaffney, J.J. Minich, A. V. Melnik, J. Herschend, J. DeReus, A. Durant, R. J. Dutton, M. Khosroheidari, C. Green, R. da Silva, P. C. Dorrestein, R. Knight. \emph{mSystems}, 2016, DOI: 10.1128/mSystems.00038-16.
+\include{chapter_48_hours}
+\include{chapter_labman}
 
-\section{PlateMapper}\label{section_platemapper}
-
-\chapter{Conclusions}\label{chapter_conclusions}
-\glsresetall
-% \include{chapter_conclusions}
+\include{chapter_conclusions}
 
 \appendix
 \include{appendix}

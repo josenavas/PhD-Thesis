@@ -1,0 +1,206 @@
+\glsresetall
+
+\section{Labman: facilitating metadata collection in the wet lab}\label{section_platemapper}
+
+\subsection{Introduction}
+
+Characterizing the complex interactions between the microbiome and the environment
+in which that microbiome is found requires a detailed description of the sample
+source; in other words, sample metadata. Additionally, as important as recording
+accurate sample metadata is capturing all the information related to the processes
+that a sample undergoes in the laboratory, because differences in the sample
+handling and processing can cause differences more powerful than the actual
+biological differences \cite{Sinha2017, Song2016, Kuczynski2011, Tremblay2015}. Additionally, recording such information is
+crucial to facilitate reproducibility. Publishers require this information at
+publication time, but standardizing how this information is represented is not
+only currently lacking in the field, but would also facilitate the discovery of
+datasets processed similarly and which could be included in an analysis to
+provide context or other cross-comparisons. Here, we introduce a new tool,
+Labman, which aids researchers and wet lab technicians during sample preparation
+by collecting processing information in a structured, standardized way and
+exporting this information in a tab-delimited file that can be imported into
+common analysis tools, such as Qiita (submitted for publication), QIIME \cite{Caporaso2010},
+mothur \cite{Schloss2009}, R, python, or Microsoft Excel, among others.
+
+\subsection{Results and Discussion}
+
+Sample processing in the wet lab comprises an important set of independent
+processes. If done incorrectly, or if done correctly but without proper sample
+tracking, entire studies can be ruined. The first step in most microbiome
+studies involves extracting microbial DNA from the sample. Then, depending on
+whether the investigators are targeting a bacterial, fungal, or eukaryotic marker
+gene (i.e., 16S, ITS, or 18S) or want to sequence whole genomes of the microbes
+present in the sample, different, additional sample processing steps are required
+and can include PCR, DNA concentration normalization, and sequencing library
+preparation. Each of these steps is associated with the creation of different
+documents created by researchers and wet lab technicians; documents traditionally
+generated during sample processing include “sample plates,” “sequencing manifests,”
+“wet lab notebooks,” and “sample preparation information” files. Each time a new
+document is created, new opportunities for the introduction of human error arise,
+whether in the form of introducing typos or in the form of inconsistent or
+incorrect document integration. This especially makes error tracking difficult,
+as multiple files, often created by multiple individuals, need to be resolved in
+the context of one another.
+
+“Sample plates” are documents that represent the layout of a plate (usually
+96-well or 384-well) and store information about which samples were placed into
+which wells. This information is essential to recover the sample of origin for
+target gene or whole genome sequencing efforts, and is typically stored in an Excel
+file. “Sample sheets“ are comma-separated files required by the Illumina sequencers
+and that contain information necessary to set up and perform the sequencing process.
+These “sample sheets” can be generated using Illumina’s Experiment Manager, which
+reduces human error, or using Excel. Laboratories that opt not to use Illumina’s
+standard index sequences may find it cumbersome to set up Illumina’s Experiment
+Manager using custom configurations, and therefore, they usually end up using
+Excel or a similar tool, which are prone both to human error and to errors
+introduced by assumptions and auto-corrections made within the application.
+“Wet lab notebooks” are paper-based notebooks that researches use to take notes
+during the different steps of sample processing and are often completed to
+various levels of detail, from poor to pristine. Finally, “sample preparation
+files” are tab-separated files containing summary of all the processes performed
+in the wet lab, and are commonly merged with the sample metadata used for
+downstream analysis.
+
+The main drawback of such a set up is the disconnected nature of the files and
+the fact that they are prone to human error as they rely on the researcher’s
+ability to avoid simple mistakes (such as typos) and keep the various files
+synchronized. Furthermore, different members of the team can prepare these files,
+making troubleshooting mistakes in any of these files a tedious task that can
+delay analyses for days or even weeks.
+
+Labman centralizes all of this information and associated documents within a
+single system. Built on top of Qiita, Labman uses Qiita’s definitions of Study
+and Sample Information to provide context and predefined values to the researcher.
+This design assumes and requires a study to be created in Qiita before the samples
+are processed in the wet lab. This design is ideal and enforces a standard
+requirement for sample metadata, as it helps avoid issues with tracking down
+“lost” sample information later, as often occurs when samples are processed
+without the existence of corresponding metadata. Using Labman, the user is
+presented with a dropdown list of the sample identifiers present in the Qiita
+study that was already created
+%(Figure 1A)
+. Users can then create plate maps for
+plating samples for DNA extraction, PCR, DNA concentration normalization, and
+sequencing library preparation. This centralization minimizes the chances that a
+researcher may introduce an error; for example, the precompiled sample identifier
+list eliminates the introduction of typos during the sample plating process (a
+common mistake at this stage) and provides a reference to the user in cases where
+reading the sample identifier on the sample tube is challenging.
+
+The next step in the pipeline is to extract the gDNA from the samples
+%(Figure 1B)
+. In this step, the user is presented with a simple form in which the user
+indicates which plates are to be extracted, the extraction robot and tool, the
+extraction kit used, and the volume in each of the wells of the resulting gDNA
+plate.
+
+The third step in the pipeline is to prepare the libraries for sequencing
+%(Figure 1C)
+. In this step, the user chooses the plates that are going to be prepared
+and provides a corresponding barcoded-primer template plate for each gDNA plate,
+the master mix and water lots used for the library preparation, and the robots
+and tools used. This step has historically been a common source of error, as it
+is easy for researchers to miss-assign the sequencing barcode to sample,
+generating incorrect results, and subsequently, incorrect biological conclusions,
+that could go undetected for a long time.
+
+After preparing the sequencing libraries, the user is presented with a page to
+upload the DNA concentration values for the prepared libraries
+%(Figure 1D)
+. The user can then upload a file generated by a DNA concentration reader (such
+as the Pico Green quantification method) and use these values to decide how much
+volume from each well needs to be pooled into a single tube to ensure a normalized
+pooling.
+
+Finally, the user is presented with the last step of the pipeline: preparation of
+the final sequencing pool
+%(Figure 1E)
+. In this step, the user provides a list of plate pools and their mixing
+percentages into a final sequencing pool. This allows the user to maximize even
+coverage across samples, or even to generate a mixed run in which target gene
+libraries are combined with whole genome shotgun sequencing libraries.
+
+In addition to all the information provided by the user, the system
+automatically keeps track of the date on which each different process was
+performed, and which user introduced associated values. At the end of the process,
+the user can generate the “sample sheets” compatible with Illumina’s sequencers
+and the “sample preparation information” files automatically, without the need
+for manual modification, reducing human error.
+
+Labman not only facilitates the task of keeping track of the current procedures
+performed in the wet lab, but it also provides an invaluable source of information
+for troubleshooting potential problems during the microbiome analyses. For example,
+during common wet lab procedures, a technician can detect a robot malfunction, or
+an analyst can find extraneous results due to a contaminated extraction kit. In
+such situations, users can easily retrieve information about all of the plates,
+samples and studies that were potentially impacted by the issues, enabling them
+to ensuring the quality and accuracy of the results associated with all processed
+samples. Additionally, keeping track of all of this information can enable new
+methods development by revisiting the results of previously processed samples.
+For example, the Microbiome Quality Control project (MBQC) \cite{Sinha2017} performed an
+evaluation of several steps during sample handling across multiple laboratories,
+finding differences between laboratories using the same protocols. With the
+standard data representation provided by Labman, laboratories could perform
+routine checks, ensuring that sample handling remains consistent across equipment,
+reagents, and technicians.
+
+Storing this information in a structured and standardized way adds another
+property to the system: data analysts can now predict the format in which the
+values are stored in the final sample metadata files. This predictability
+nables bioinformaticians to automate the initial analysis steps, reducing human
+involvement (and hence, human error) as well as freeing up time to focus on data
+interpretation rather than performing mechanistic tasks like formatting metadata
+and executing the same commands over and over. As an example, the Center for
+Microbiome Innovation at the University of California San Diego is currently
+developing an automated processing, analysis and summarization
+pipeline \footnote{\url{https://github.com/josenavas/CMIRapidResponse}} that can
+be used to generate multiple results displays for interpretation by researchers,
+grouped in an easy-to-use html-based interface. This summary currently includes
+an interactive BIOM \cite{McDonald2012BIOM} summary that enables researchers to evaluate the quality
+and coverage of the sequencing data across metadata categories, taxonomy bar
+plots summarizing the taxonomic composition of the features found, Emperor \cite{Vazquez-Baeza2013}
+plots of UniFrac distances \cite{Lozupone2005}, bar plots of Alpha Diversity metrics and alpha
+correlations, and a differential abundance test evaluated by ANCOM \cite{Mandal2015}. While
+each of these analyses can be obtained using recently developed tools used for
+microbiome analyses (including but not limited to QIIME, QIIME2, SEPP, deblur,
+nd Emperor), it does not require user training or knowledge of any of the
+underlying platforms or languages, greatly reducing the barrier to entry and
+access to microbiome data. Instead, a user can simply choose the primary axis of
+interest as summarized in a standard metadata category and provide the sequence
+and accompanying metadata for the sample to generate interpretable results and
+statistics.
+
+By combining this automatic pipeline with the Labman software, data can be
+automatically processed and displayed for researchers in real time, as the
+results are returned from the sequencer, vastly reducing the skill and time
+needed for producing results. The removal of human intervention from the moment
+that the libraries enter the sequencer up to interpretable results provides an
+environment that enables the Center for Microbiome Innovation to generate
+microbiome results at unprecedented speed, efforts that where first presented in
+Quinn et al 2016 \cite{Quinn2016}. Although the current implementation is used for samples
+intended for target gene or whole genome sequencing, Labman is extensible,
+making it suitable for any ‘omics technology. This is particularly significant
+given the exponential growth in the number of microbiome studies utilizing
+multiple ‘omics data types. We therefore suggest that automated, push-button
+metadata and sample preparation tools such as Labman will be critical for
+pushing multi-omics microbiome research forward at a pace that matches the
+speed at which such data are being generated.
+
+\subsubsection{Materials and Methods}
+
+Labman is a web-based tool built on top of the Qiita software
+(submitted for publication). Labman extends Qiita’s Postgres database to
+include three new main classes of information: Containers, Compositions,
+and Processes. Containers are common wet laboratory appliances, such as
+tubes and plate wells. Compositions are different mixtures that can be stored
+in the containers, such as reagents (PCR master mix, water, extraction kits,
+etc.), raw biological samples, gDNA extracted from samples, prepared sequencies
+libraries, or the pooled samples ready for sequencing. Finally, processes
+represent the wet lab procedures that generate the different compositions,
+beginning with the sample plating procedure and ending at the final sequencing
+procedure. Labman additionally supports extensibility as new technologies and
+procedures become available by sub-classing these objects, making it suitable
+for any ‘omics technology.
+
+Labman is implemented in Python 3 and the source code can be found on Github
+at https://github.com/jdereus/labman.
