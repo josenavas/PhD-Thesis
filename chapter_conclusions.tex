@@ -1,40 +1,40 @@
 \chapter{Conclusions}\label{chapter_conclusions}
 \glsresetall
 
-As Chapter~\ref{chapter_overview} described, improvements in current technology
-are pushing microbiome science to become a big data field. Big data is being
-generated in multiple ways. First, advancements in sequencing technologies can
-generate two orders of magnitude more data than 10 years ago. Second, the need
-for different 'omics technologies to study different aspects of the system is
-aggregating even more data per sample than ever before. Finally, the complex
+As I described in Chapter~\ref{chapter_overview}, improvements in current technology
+are pushing microbiome science to become a ''Big Data`` field. Big Data is being
+generated in multiple ways. First, advances in sequencing technologies can
+generate four orders of magnitude more data than 10 years ago. Second, the need
+for different 'omics technologies to study different aspects of the system requires
+aggregation of even more data per sample than ever before. Finally, the complex
 interactions of the microbes with their niche require an accurate description of
 their niche, represented in the form of sample metadata. This rapid increase of
-data presents a wide range of challenges to investigators, many of whom, due to
-the various conditions for which the microbiome is a component, are not
+data volume and heterogeneity presents a wide range of challenges to investigators, many of whom, due to
+the various conditions and system for which the microbiome is important, are not
 microbiologists by training or do not have extensive background in microbial
-ecology-or in the tools that can be used to analyze the data. Some of these tools
+ecology, or in the tools that can be used to analyze the data. Some of these tools
 can prove intimidating to those with no background in computer science. This
 thesis provides solutions to some of these challenges, specifically by improving
 usability of analysis tools and access to resources required to run those tools,
 and by providing solutions to standardize data handling, storage, and analysis.
 
-\section{Improving analysis tools usability}
+\section{Improving usability of analysis tools}
 
-From the tools available to perform microbiome analyses, \gls{qiime} is a popular
-choice by the community. \gls{qiime} is a collection of command line scripts that
-can be challenging to use for investigators that are not familiar with the \gls{cli}.
-Section~\ref{section_book} described the first gold standard for microbiome data
+Of the tools available to perform microbiome analyses, \gls{qiime} is a choice
+popular in the community. \gls{qiime} is a collection of command line scripts that
+can be challenging to use for investigators who are not familiar with the \gls{cli}.
+Section~\ref{section_book} described the first gold standard approach for microbiome data
 analysis, starting from sample preparation and going through to publication-quality
-figures. This section is a step-by-step guide, so even researchers with a lack of \gls{cli}
-familiarity are able to successfully perform their analyses.
+figures. This section is a step-by-step guide, so even researchers who lack \gls{cli}
+familiarity can successfully perform their analyses.
 
-A \gls{cli} is prone to user error. A simple typo can make the script to fail or
+A \gls{cli} is prone to user error. A simple typographical error can make the script fail or
 generate undesired results. To assess this issue (among many others), Qiita
 (Section~\ref{section_qiita}) was presented as a web-based solution that allows
 command execution with a \gls{gui}, minimizing the amount of input provided by
-the user and removing typo errors.
+the user and removing typographical errors.
 
-Current tool developers are focused on solving a complex problem and making their
+Tool developers typically focus on solving a complex problem and making their
 tool available to the community as soon as possible. Developing a \gls{gui} doubles
 the development time \cite{Myers1992}, a cost that developers do not want to incur
 in a fast changing field like microbiome research. Qiita builds a bridge between
@@ -45,7 +45,7 @@ commands and Qiita automatically generates a web-based \gls{gui}.
 
 This ability to make new command line tools rapidly available to non command line
 savvy researchers will push microbiome research forward faster than ever before.
-The usual steep learning curve for a new tool gets completely removed, since all
+The usual steep learning curve for a new tool gets completely removed, because all
 tools in Qiita are based on the same \gls{gui}, and the researcher can focus on
 the science of their results rather than on the specifics of a new \gls{cli}.
 This will enable researchers to perform all their multi-omics analyses in a
@@ -58,15 +58,15 @@ to the researcher, who can then combine mass spectrometry data with other data t
 such as microbiome sequence data (both marker gene and whole genome shotgun), host
 genome sequence data, and proteomics data, among others. The potential for
 providing a more complete picture than ever before possible places Qiita at the
-forefront to facilitate the future of microbiome multi-omics research.
+forefront of techniques that facilitate the future of microbiome multi-omics research.
 
-\section{Improving analysis tools resource utilization}
+\section{Improving resource utilization of analysis tools}
 Section~\ref{section_bottlenecks} identified one of the common bottlenecks when
 analyzing target gene sequencing data: sequence clustering. The microbiome field
-has been gaining interest from computational biologists, constantly presenting new
-tools in the literature that increase the quality of the results and reduce the
+has been gaining interest from computational biologists, constantly presenting in
+the literatur new tools that increase the quality of the results and reduce the
 time to solution. Section~\ref{subsection_openref} presented a benchmark of
-current sequence clustering tools available, and provided a comparative framework
+available sequence clustering tools, and provided a comparative framework
 that can be used to compare new tools as they become available. This framework can
 objectively assess the quality and speed of new tools, enabling users to
 critically assess the best tool they want to use. This empowers users with the
@@ -79,37 +79,37 @@ using modern laptops or personal computers is becoming an impossible task. Howev
 microbiologists do not necessarily have access to supercomputers, and they often
 rely on cloud services such as Amazon \gls{ec2} to perform their analysis. Being an \gls{iaas}
 cloud solution, microbiologists are presented with the challenge of choosing adequate
-resources to run their analysis tools. In Chapter~\ref{chapter_cudswap}, I presented
+resources to run their analysis tools. In Chapter~\ref{chapter_cudswap}, I showed
 that memory is the most critical cloud resource because it is the most expensive
-cloud resource and a shortage of memory translates into the termination of the user
+cloud resource, and a shortage of memory translates into termination of the user's
 analysis and a loss of all work performed until that point. In Section~\ref{section_memory_exhaustion},
 I describe a potential solution to this problem: CUDSwap, a \gls{lkm} that monitors
 the system memory and dynamically adds swap space if the system memory falls below
 a given threshold. Section~\ref{section_cudswap} presented an implementation of
-the previous design, removing the necessity of using a threshold, and
+the previous design, removing the necessity to use an arbitrary user-defined threshold, and
 evaluated the performance of CUDSwap using a memory bounded step of the
 microbial analysis pipeline: sequence clustering. The sequence clustering step
 follows a semi-sequential memory access pattern that makes it suitable to use
 swap space under memory oversubscription situations, allowing the process to
 finish at the expense of a small increase of running time. CUDSwap is a system
 that improves user experience and increases the value of the resources by providing
-useful results from all computations. However, CUDSwap should not be used constantly,
-but rather as a safeguard when a miss-prediction occurs.
+useful results from all computations. However, CUDSwap should not be used all the time,
+but rather as a safeguard when a mis-prediction occurs.
 
-Historically, tools for analyzing microbiome data have been developed by biologists
-that acquired programming knowledge. As the field keeps moving towards big data,
-more and more computer scientist have been involved in the development of these
-tools, applying techniques and optimizations that allow tools to operate on the
-amount of data generated nowadays. However, the developers don’t necessarily
-acknowledge the big data nature of the field, and tools are limited to small
+Historically, many tools for analyzing microbiome data have been developed by biologists
+who acquired programming knowledge later in their careers. As the field moves towards big data,
+more and more computer scientists have been involved in the development of these
+tools, applying techniques and optimizations that allow tools to operate on modern
+data scales. However, few developers acknowledge the big data nature of the field, and
+as a result, many tools are limited to small
 datasets, and do not scale well to large scale initiatives like the \gls{emp}
-(Section~\ref{subsection_emp}) or \gls{agp} (Section~\ref{subsection_ag}). To
+(Section~\ref{subsection_emp}) or the \gls{agp} (Section~\ref{subsection_ag}). To
 achieve the levels of scalability needed by these initiatives, applying just pure
 computer science optimization techniques or just domain specific optimizations is
 not enough. A multidisciplinary team of developers is needed, in which computer
-scientist can include computer science optimizations and domain experts can provide
+scientists can contribute algorithmic, user interface, and software engineering optimizations and domain experts can provide
 a better understanding of the nature of the data to find new ways of approaching
-the computational problems. Using this approach, as shown in sections~\ref{subsection_openref}
+the computational problems. This approach, as shown in sections~\ref{subsection_openref}
 and~\ref{subsection_deblur}, can generate analysis tools that scale to dataset
 sizes never before thought possible, enabling researches to push microbiome
 research forward to a whole new level.
@@ -117,32 +117,32 @@ research forward to a whole new level.
 \section{Standardization of metadata and analysis}
 
 Accurately describing the environment that a sample comes from is key to characterize
-the microbiome of the sample and its interactions with said environment. Using a
+the microbiome of the sample and its interactions with its environment. Using a
 standard to represent this information, such as the \gls{mimarks} standard \cite{Yilmaz2011},
 allows researches to perform comparative analyses across multiple datasets,
 improving their ability to find new relationships between the microbiome and its
 niche. In Chapter~\ref{chapter_qiita}, I described how meta-analyses move microbiome
 research forward by increasing the power of the findings. However, a researcher
 performing a meta-analysis should ensure that the samples have been handled,
-processed and analyzed in a similar way, to reduce the impact of technical
-differences. In Section~\ref{section_qiita}, I have presented Qiita, a system
+processed and analyzed in the same way, to reduce the impact of technical
+differences. In Section~\ref{section_qiita}, I presented Qiita, a system
 designed to facilitate meta-analyses by normalizing sample metadata and minimizing
 processing differences. Qiita simplifies the complex process of creating a
-meta-analysis to a few mouse clicks, cutting down the time and effort spend by
-researches from months to few minutes. This ability of easily contextualize samples
+meta-analysis to a few mouse clicks, cutting down the time and effort spent by
+researchers from months to few minutes. This ability to easily contextualize samples
 with massive initiatives like the \gls{hmp}, \gls{emp} and \gls{agp} opens the door
-to a whole new world of possibilities, empowering the researchers with new ways of
+to a whole new world of possibilities, empowering researchers with new ways of
 looking at their data and finding new links between the microbiome and their niche.
 For example, researchers can find new links between the microbiome and diseases,
 develop new microbiome-based treatments, or engineer new biofuels. With the microbiome
-being present in so many fields, the possibilities are endless.
+being important in so many fields, the possibilities are endless.
 
 In current microbiome studies, researchers still spend a fair amount of time generating
 metadata. In several aspects, the information should be encoded using a specific
 vocabulary or ontology, and the usage of those standardized vocabularies is not
 necessarily intuitive, and requires a fair amount of previous knowledge of the
 specific ontology to complete the sample metadata efficiently. In Section~\ref{section_platemapper},
-I presented PlateMapper, a system built on top of Qiita and that facilitates the
+I presented LabMan, a system built on top of Qiita that facilitates the
 process of recording the sample preparation information. This system normalizes
 the representation of the sample preparation information as the wet lab technician
 is performing the sample preparation. This system reduces the effort that researchers
@@ -152,18 +152,18 @@ file. Being able to rely on a standardized set of information enables researcher
 to automate parts of the analyses. For example, as shown in Section~\ref{section_platemapper},
 an initial analysis of the data can be performed automatically, providing
 researchers with an initial overview of the data that can be used to guide further
-downstream analyses, or to detect problems with sample processing, cutting down
+downstream analyses, or to detect problems with sample processing, reducing down
 detection time and, hence, the reprocessing of the samples.
 
-PlateMapper aids researches to store the sample preparation information. However,
+LabMan helps researchers to store sample preparation information. However,
 work still needs to be done to help researchers to provide their sample metadata.
 A new system that guides the researchers through the \gls{mimarks} standard and
 allows them to efficiently use the existing ontologies to encode their
-information would be critical to increase the efficiency of microbiome research.
+information would greatly increase the efficiency of microbiome research.
 This way, the tedious problem of formatting the sample metadata can be reduced
 from weeks of effort to hours, and ideally would be performed at the same time
 that the samples are collected. With such a system working jointly with Qiita and
-PlateMapper, researchers could focus on the science and biological questions,
+LabMan, researchers could focus on the science and biological questions,
 rather than spending months of their time on basic data formatting.
 
 \section{Bringing microbiome research to the clinic}
@@ -172,9 +172,9 @@ The standardization of sample handling, processing, analysis, and metadata curat
 as well as improvements in the efficiency of data processing not only provide a
 common platform for microbiome research, but also increases efficiency and allows
 researchers to generate results at speeds never achieved before. In Section~\ref{section_48hours},
-I present how combining the improvements in the tools with a group of experts can
-generate multi-omics results in as little as 48 hours. These speeds open the
-opportunity of microbiome analysis to be used in areas in which time is critical.
+I show how combining the improvements in the tools with a group of experts can
+generate multi-omics results in as little as 48 hours. These speeds provide the
+opportunity for microbiome analysis to be used in areas in which time is critical.
 One such area is human health, in which a multi-omics, microbiome-based analysis
 can provide new relevant information to the clinicians, enabling them to diagnose
 difficult cases. For example, sequencing can be used to understand \emph{Mycobacterium tuberculosis}
@@ -185,18 +185,18 @@ answer. Empowering clinicians with sequencing information that generates results
 less than 8 weeks while identifying possible drug resistance genes present in the
 \emph{Mycobacterium tuberculosis} strain infecting the patient will be an invaluable
 resource that can save lives. This is just one example, but with the microbiome
-being linked to other conditions like diabetes, Alzheimer’s, Autism, depression,
-etcetera, the potential of improving the current health care would reach a completely
+being linked to other conditions like diabetes, Parkinson's, Autism, depression,
+and many others, the potential of improving the current health care would reach a completely
 new level. Furthermore, with antibiotic resistance becoming an increasing problem,
-being able to treat with targeted antibiotics rather than broad-spectrum antibiotics
-will slow down this pressing problem.
+being able to treat patients with targeted antibiotics rather than broad-spectrum antibiotics
+will combat this pressing problem.
 
-This thesis provides and efficient and extensible framework for multi-omics analyses.
+This thesis provides an efficient and extensible framework for multi-omics analyses.
 As new microbiome studies are being designed targeting specific links between the
 microbiome and disease, this framework becomes an invaluable resource for human
-health. With an increasing pool of samples available in Qiita, techniques like
+health. With an increasing pool of samples available in Qiita, techniques such as
 neural networks or other machine learning approaches could be applied to find new
 biomarkers that facilitate patient diagnosis. New, non-invasive approaches could
 be used to diagnose diseases. The microbiome is becoming a key component of precision
 medicine, and providing a framework that enables faster advances in microbiome
-research will help to accelerate the presence of the microbiome in the clinic.
+research will help to accelerate the use of the microbiome in the clinic.

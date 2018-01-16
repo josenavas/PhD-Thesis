@@ -18,6 +18,24 @@ which has been studied for more than 30 years. Sections~\ref{subsection_openref}
 contributions to optimize the sequence clustering step of microbial community
 datasets analysis.
 
+Section~\ref{subsection_openref} has been adapted from the original publication in
+``Subsampled open-reference clustering creates consistent, comprehensive OTU
+definitions and scales to billions of sequences''. J. R. Rideout, Y. He,
+J. A. Navas-Molina, W.A. Walters, L. K. Ursell, S. M. Gibbons, J. Chase,
+D. McDonald, A. Gonzalez, A. Robbins-Pianka, J. C. Clemente, J. A. Gilbert,
+S. M. Huse, H. W. Zhou and R. Knight \emph{PeerJ}, 2014, DOI: 10.7717/peerj.545.
+
+Section~\ref{subsection_soa} has been adapted from the original publication in
+``Open-source sequence clustering methods improve the State of the Art''.
+E. Kopylova, J. A. Navas-Molina, C. Mercier, Z. Z. Xu, F. Mahe, Y. He, H. Zhou,
+T. Rognes, J. G. Caporaso, R. Knight \emph{mSystems}, 2016, DOI: 10.1128/mSystems.00003-15
+
+Section~\ref{subsection_deblur} has been adapted from the original publication in
+``Deblur rapidly resolves single-nucleotide community sequence patterns''.
+A. Amir, D. McDonald, J. A. Navas-Molina, E. Kopylova, J. T. Morton, Z. Z. Xu,
+E. P. Kightley, L. R. Thompson, E. R. Hyde, A. Gonzalez, R. Knight \emph{mSystems},
+2017, DOI: 10.1128/mSystems.00191-16
+
 \subsection{Subsampled open-reference clustering creates consistent, comprehensive OTU definitions and scales to billions of sequences}\label{subsection_openref}
 
 Section~\ref{section_book} described three different \gls{otu} picking approaches:
@@ -172,22 +190,21 @@ consisting of only one sequence), so all results presented here have had singlet
 \gls{otu}s removed. Table~\ref{stateArtT2} summarizes basic performance results
 for all software.
 
-% TODO: Change this figure to a table
-% \begin{figure}[htbp]
-% \includegraphics[width=\columnwidth]{chapter_otupicking_figures/stateArtT2.pdf}
-% \caption[Benchmark summary]{\textbf{Benchmark summary.} \gls{otu} counts do not
-% include singletons. F measure (F1) is for assigned taxonomies at the genus level.
-% The \gls{pd} whole-tree column for \emph{Bokulich\_2} and \emph{Bokulick\_3}
-% represent \gls{pd} intervals across various sampling depths. Procrustes $M^2$
-% (the sum of squared deviations or the dissimilarity of two datasets for UniFrac
-% \gls{pcoa}) and rho (Pearson's correlation coefficient for taxonomies at genus
-% level) values are with repect to UCLUST (default for \gls{qiime} versions 1.0.0
-% to 1.9.1). Monte Carlo $P$ values were not included, since all values were
-% $<0.05$ except for \emph{de novo} usearch52 versus uclust ($P = 0.09$). The darkest
-% blue shades represent the highest F1 scores, while the darkest red shades represent
-% results closest to those obtained with UCLUST}
-% \label{stateArtT2}
-% \end{figure}
+\begin{sidewaystable}[htbp]
+\caption[Benchmark summary]{\textbf{Benchmark summary.} \gls{otu} counts do not
+include singletons. F measure (F1) is for assigned taxonomies at the genus level.
+The \gls{pd} whole-tree column for \emph{Bokulich\_2} and \emph{Bokulick\_3}
+represent \gls{pd} intervals across various sampling depths. Procrustes $M^2$
+(the sum of squared deviations or the dissimilarity of two datasets for UniFrac
+\gls{pcoa}) and rho (Pearson's correlation coefficient for taxonomies at genus
+level) values are with repect to UCLUST (default for \gls{qiime} versions 1.0.0
+to 1.9.1). Monte Carlo $P$ values were not included, since all values were
+$<0.05$ except for \emph{de novo} usearch52 versus uclust ($P = 0.09$). The darkest
+blue shades represent the highest F1 scores, while the darkest red shades represent
+results closest to those obtained with UCLUST}
+\label{stateArtT2}
+\includegraphics[width=\columnwidth]{chapter_otupicking_figures/stateArtT2.pdf}
+\end{sidewaystable}
 
 We found that Swarm, SUMACLUST, UCLUST, and UPARSE (with relaxed parameters)
 performed equally well on simulated datasets where the ground truth was well
