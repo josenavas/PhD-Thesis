@@ -162,6 +162,8 @@
 \makeglossaries
 \include{abbreviations}
 
+\PassOptionsToPackage{hyphens}{url}\usepackage{hyperref}
+
 \begin{document}
 
 
@@ -427,20 +429,6 @@ dissertation and the interaction of an interdisciplinary team of analysis expert
 microbial community analyses can be performed in under 48 hours, a time frame short
 enough to provide useful information in a clinical setting.
 
-The analysis effort described in section~\ref{section_48hours} provided enough
-information to identify additonal bottlenecks that could be alleviated to further
-reduce analysis time. Specifically, one of the bottlenecks was the transfer of sample
-processing information from the wet lab to the dry lab, as well as an efficient
-method to record that information, which is critical for assessing the quality of the sequencing run.
-Section~\ref{section_platemapper} presents a system built on top of Qiita that
-provides an easy way to record all the wet lab information and transfer
-it to the dry lab. Furthermore, by systematically storing the information in a
-structured way, human interaction can be reduced in multiple parts of the pipeline,
-so analyses can be run automatically as soon as the sequences are available.
-This generates an initial overview of the data as fast as possible, providing
-the data analyst with enough information to decide how and whether to move forward with
-more in-depth analyses.
-
 The material in section~\ref{section_48hours} was published in \textsl{mSystems, 2013}.
 As a co-first author of this publication, I performed the fast initial 16S analysis,
 generated the first pass analysis for more in-depth analyses of the 16S data,
@@ -454,13 +442,7 @@ G. Humphrey, J. Gaffney, J. J. Minich, A. V. Melnik, J. Herschend, J. DeReus,
 A. Durant, R. J. Dutton, M. Khosroheidari, C. Green, R. da Silva, P. C. Dorrestein,
 R. Knight \emph{mSystems}, 2016, DOI: 10.1128/mSystems.00038-16
 
-Section~\ref{section_platemapper}, in part, has been submitted for publication of the
-material as it may appear in mSystems, 2018, J. A. Navas-Molina, A. Birmingham,
-J. DeReus, J. Sanders, A. Swafford, G. H Humphrey, A. Gonzalez, D. McDonald,
-Y. Vazquez-Baeza, R. Knight.
-
 \include{chapter_48_hours}
-\include{chapter_labman}
 
 \include{chapter_conclusions}
 

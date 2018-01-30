@@ -354,7 +354,8 @@ to match the database, it is discarded. The open-reference approach (Figure ~\re
 starts with an existing database and tries to match the sequences against them. However, if a
 sequence does not match the database, it is added to the database as a new reference sequence.
 
-\begin{sidewaystable}[htbp]
+\begin{table}[htbp]
+\tiny
 \centering
 \caption[Supported \gls{otu} picking methods in \gls{qiime}, with a brief description of the algorithm employed and in which \gls{otu} picking approach can be used.]{Supported \gls{otu} picking methods in \gls{qiime}, with a brief description of the algorithm employed and in which \gls{otu} picking approach can be used.}\label{btable2}
 \renewcommand{\arraystretch}{0.6}% Tighter
@@ -391,7 +392,7 @@ Method & \multicolumn{3}{c}{Picking approach} & Description & Reference \\
 & & & & reference based chimera detection. & \\
 \bottomrule
 \end{tabular*}
-\end{sidewaystable}
+\end{table}
 \renewcommand{\arraystretch}{1}% Restore original value
 
 \begin{figure}[htbp]
@@ -458,7 +459,8 @@ describes the \gls{otu} picking protocols, their advantages and limitations
 Table ~\ref{btable3} compares the different \gls{otu} picking approaches and gives
 guidelines for choosing an appropriate \gls{otu} picking strategy.
 
-\begin{sidewaystable}[htbp]
+\begin{table}[htbp]
+\tiny
 \centering
 \caption[\gls{otu} picking approaches comparison. The table shows when each of the \gls{otu} picking approaches should be used and when they cannot be applied. It briefly describes the advantages and disadvantages of using each of the \gls{otu} picking approaches.]{\gls{otu} picking approaches comparison. The table shows when each of the \gls{otu} picking approaches should be used and when they cannot be applied. It briefly describes the advantages and disadvantages of using each of the \gls{otu} picking approaches.}\label{btable3}
 \renewcommand{\arraystretch}{0.5}% Tighter
@@ -473,10 +475,10 @@ use if & sequence collection to         & amplicons. The reference & \\
 \midrule
 Cannot & Comparing non-overlapping   & There is no reference    & Comparing non-overlapping \\
 use if & amplicons (e.g. V2 and      & sequence collection      & amplicons (e.g. V2 and V4\\
-       &  V4 regions of 16S \gls{rrna})    & to cluster against       & regions of 16S \gls{rrna}). \\
-       &                             & (e.g. infrequently       & There is no reference sequence\\
-       &                             & used marker gene)        & collectionto cluster against \\
-       &                             &                          & (e.g. infrequently used marker gene)\\
+       &  V4 regions of 16S \gls{rrna})    & to cluster against & regions of 16S \gls{rrna}). There \\
+       &                             & (e.g. infrequently       & is no reference sequence\\
+       &                             & used marker gene)        & collectionto cluster against (e.g.\\
+       &                             &                          & infrequently used marker gene)\\
 \midrule
 Pros & All reads are clustered & Fast, as it is fully parallelizable    & All reads are clustered.\\
      &                         & (useful for extremely large datasets). & Fast, as is partially run on parallel.\\
@@ -498,7 +500,7 @@ Cons & Time consuming since it runs in         & Inability to detect novel      
      &                                         & can be thrown away             &\\
 \bottomrule
 \end{tabular*}
-\end{sidewaystable}
+\end{table}
 \renewcommand{\arraystretch}{1}% Restore original value
 
 The recommended \gls{otu} picking approach is open-reference \gls{otu} picking,
@@ -533,7 +535,7 @@ from Streptococcus and Staphylococcus occurred multiple times independently, so
 presence of the same sequence in multiple \gls{pcr} does not mean that it is not chimeric.
 
 \gls{qiime} currently supports three different methods for detecting chimeras: blast
-fragments, a taxonomy-assignment-based approach using BLAST \cite{Altschul1990};
+fragments, a \hspace{0.01cm} taxonomy-assignment-based \hspace{0.01cm} approach \hspace{0.01cm} using \hspace{0.01cm} BLAST \cite{Altschul1990};
 ChimeraSlayer \cite{Haas2011}, which uses BLAST to identify potential chimera parents;
 and usearch 6.1 \cite{Edgar2010}, which can perform de novo chimera detection based on
 abundances as well as reference-based chimera detection. The recommended method for
@@ -618,15 +620,18 @@ As a remainder, our seqs.fna has 12.687.021 sequences of length 150.9989 +/- 0.1
     \end{lstlisting}
     \item For closed-reference (run time ∼2 hours on 20 processors):
     \begin{lstlisting}[language=bash]
-    pick_closed_reference_otus.py -i $PWD/slout/seqs.fna \
+    pick_closed_reference_otus.py
+      -i $PWD/slout/seqs.fna \
       -o $PWD/closed_ref_otus \
       -r $PWD/gg_12_10_otus/rep_set/97_otus.fasta \
-      -t $PWD/gg_12_10_otus/taxonomy/97_otu_taxonomy.txt \
+      -t $PWD/gg_12_10_otus/taxonomy/\
+         97_otu_taxonomy.txt \
       -a -O 20
     \end{lstlisting}
     \item For open-reference (run time ∼27 hours on 20 processors):
     \begin{lstlisting}[language=bash]
-    pick_open_reference_otus.py -o $PWD/open_ref_otus \
+    pick_open_reference_otus.py \
+     -o $PWD/open_ref_otus \
      -i $PWD/slout/seqs.fna \
      -r $PWD/gg_12_10_otus/rep_set/97_otus.fasta \
      -a -O 20
@@ -650,7 +655,8 @@ of the effect of this parameter in further downstream analyses). \gls{qiime} exe
 
 \begin{lstlisting}[language=bash]
 filter_otus_from_otu_table.py \
- -i $PWD/open_ref_otus/otu_table_mc2_w_tax_no_pynast_failures.biom \
+ -i $PWD/open_ref_otus/\
+    otu_table_mc2_w_tax_no_pynast_failures.biom \
  -o $PWD/open_ref_otus/otu_table_filtered.biom \
  --min_count_fraction 0.00005
 \end{lstlisting}
@@ -948,7 +954,8 @@ to correct for multiple comparisons if many are applied to the same dataset). He
 of how to compute rarefaction curves for three different alpha diversity metrics using a \gls{qiime} parameters file:
 
 \begin{lstlisting}[language=bash]
-echo “alpha_diversity:metrics shannon,PD_whole_tree,observed_species” \
+echo “alpha_diversity:metrics shannon,\
+      PD_whole_tree,observed_species” \
  > alpha_params.txt
 
 alpha_rarefaction.py \
@@ -1452,7 +1459,8 @@ generated for previous analyses and remove the low-abundance \gls{otu}s:
 \begin{lstlisting}[language=bash]
 filter_otus_from_otu_table.py \
  -i $PWD/diversity_analysis/open_ref/table_mc7205.biom \
- -o $PWD/diversity_analysis/open_ref/otu_table_filtered10.biom \
+ -o $PWD/diversity_analysis/open_ref/\
+    otu_table_filtered10.biom \
  -s 10
 \end{lstlisting}
 
@@ -1461,7 +1469,8 @@ category and 10-fold cross-validation, providing mean and standard deviation of 
 
 \begin{lstlisting}[language=bash]
 supervised_learning.py \
- -i $PWD/diversity_analysis/open_ref/otu_table_filtered10.biom \
+ -i $PWD/diversity_analysis/open_ref/\
+    otu_table_filtered10.biom \
  -m $PWD/IQ_Bio_16sV4_L001_map.txt -c GENOTYPE \
  -o $PWD/open_ref_supervised_learning_output -e cv10
 \end{lstlisting}
@@ -1503,16 +1512,20 @@ be opened in Excel or other popular tools):
 
 \begin{lstlisting}[language=bash]
 convert_biom.py \
- -i $PWD/diversity_analysis/open_ref/otu_table_filtered10.biom \
- -o $PWD/diversity_analysis/open_ref/otu_table_filtered10.txt -b
+ -i $PWD/diversity_analysis/open_ref/\
+    otu_table_filtered10.biom \
+ -o $PWD/diversity_analysis/open_ref/\
+    otu_table_filtered10.txt -b
 \end{lstlisting}
 
-Then, we can call SourceTracker using the following command (the \$SOURCETRACKER\_PATH variable should be defined if
+Then, we \hspace{0.01cm} can \hspace{0.01cm} call \hspace{0.01cm} SourceTracker \hspace{0.01cm} using \hspace{0.01cm} the following
+command (the \$SOURCETRACKER\_PATH variable should be defined if
 you have successfully install SourceTracker):
 
 \begin{lstlisting}[language=bash]
 R --slave --vanilla --args \
- -i $PWD/diversity_analysis/open_ref/otu_table_filtered10.txt \
+ -i $PWD/diversity_analysis/open_ref/\
+    otu_table_filtered10.txt \
  -m $PWD/IQ_Bio_16sV4_L001_map_ST.txt \
  -o $PWD/open_ref_sourcetracker_output \
  < $SOURCETRACKER_PATH/sourcetracker_for_qiime.r
@@ -1557,13 +1570,15 @@ compare_3d_plots.py \
 
 transform_coordinate_matrices.py \
  -i $PWD/diversity_analysis/closed_ref/bdiv_even7205/\
- unweighted_unifrac_pc.txt,$PWD/diversity_analysis/open_ref/\
- bdiv_even7205/unweighted_unifrac_pc.txt \
+ unweighted_unifrac_pc.txt,$PWD/diversity_analysis/\
+ open_ref/bdiv_even7205/unweighted_unifrac_pc.txt \
  -r 100 -o $PWD/procrustes/closed_ref-open_ref
 
 compare_3d_plots.py \
- -i $PWD/procrustes/closed_ref-open_ref/pc1_transformed.txt,\
- $PWD/procrustes/closed_ref-open_ref/pc2_transformed.txt \
+ -i $PWD/procrustes/closed_ref-open_ref/\
+ pc1_transformed.txt,\
+ $PWD/procrustes/closed_ref-open_ref/\
+ pc2_transformed.txt \
  -o $PWD/procrustes/closed_ref-open_ref/plot \
  -m $PWD/IQ_Bio_16sV4_L001_map.txt
 \end{lstlisting}
